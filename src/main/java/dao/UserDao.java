@@ -1,0 +1,139 @@
+package dao;
+
+/**
+ * @author karthik
+
+ *
+ */
+
+import java.sql.*;
+
+import java.util.ArrayList;
+
+import dao.exception.DAOException;
+import model.User;
+
+public class UserDao {
+
+// Getting Connection
+	public static Connection connect() throws DAOException {
+
+		Connection connect = null;
+
+		try {
+			connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/corejava", "root", "123456");
+		} catch (SQLException e) {
+			throw new DAOException( e);
+		}
+		return connect;
+
+	}
+
+//	Creating Statement and inserting the user's value
+	public boolean createUser(User user) throws DAOException {
+
+		final String QUERY = "INSERT INTO users (name,email,password) VALUES (?,?,?)";
+		int row = 0;
+		try (PreparedStatement std = connect().prepareStatement(QUERY)) {
+
+			std.setString(1, user.getName());
+			std.setString(2, user.getEmail());
+			std.setString(3, user.getPassword());
+
+			row = std.executeUpdate();
+			System.out.println("Rows affected: " + row);
+
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		}
+		return row > 0;
+
+	}
+
+//	Delete the user
+	public boolean deleteUser(String email) throws DAOException {
+
+		final String DELETEQUERY = "DELETE FROM users where email=?";
+
+		int row = 0;
+
+		try (PreparedStatement std = connect().prepareStatement(DELETEQUERY)) {
+
+			std.setString(1, email);
+
+			row = std.executeUpdate();
+
+			System.out.println("Deleted row: " + row);
+
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		}
+
+		return row > 0;
+
+	}
+
+//	Getting the register user's details
+	public ArrayList<User> regiteredUsersList() throws DAOException {
+
+		ArrayList<User> users = new ArrayList<>();
+		final String SELECTQUERY = "Select * from users";
+		try (Statement std = connect().createStatement(); ResultSet rs = std.executeQuery(SELECTQUERY)) {
+
+			while (rs.next()) {
+
+				String email = rs.getString("email");
+				String password = rs.getString("password");
+
+				
+
+				users.add(new User(email,password));
+			}
+
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		}
+
+		return users;
+
+	}
+
+//	Getting the user's details by email id
+	public boolean selectByEmail(String email) throws DAOException {
+		final String SELECTQUERY = "SELECT email FROM users WHERE email = ?";
+
+		try (PreparedStatement pstmt = connect().prepareStatement(SELECTQUERY)) {
+
+			pstmt.setString(1, email);
+
+			try (ResultSet rs = pstmt.executeQuery()) {
+				return rs.next(); // Return true if the email exists
+			}
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		}
+	}
+
+
+//	Getting the email and password for log in
+	public boolean selectForLogin(User user) throws DAOException {
+
+		final String SELECTQUERY = "SELECT email, password FROM users WHERE email = ? AND password = ?";
+
+		try (PreparedStatement pstmt = connect().prepareStatement(SELECTQUERY)) {
+
+			pstmt.setString(1, user.getEmail());
+			pstmt.setString(2, user.getPassword());
+
+			try (ResultSet rs = pstmt.executeQuery()) {
+				return rs.next(); // Return true if the user email and password exists
+			}
+
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		}
+
+	}
+
+	
+}
