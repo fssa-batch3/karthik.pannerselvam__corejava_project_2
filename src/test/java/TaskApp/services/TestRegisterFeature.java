@@ -1,11 +1,12 @@
 package TaskApp.services;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import org.junit.jupiter.api.Test;
+
 import model.User;
 import services.UserService;
 import services.exception.ServiceException;
-
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import org.junit.Test;
 public class TestRegisterFeature {
 
 	public void main(String[] args) {
