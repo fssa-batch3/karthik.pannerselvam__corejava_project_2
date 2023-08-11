@@ -3,6 +3,7 @@ package model;
 public class Task {
 	private static String taskName;
 	private static String taskStatus;
+	private static String taskDesc;
 	private int id;
 
 	public String getTaskName() {
@@ -27,5 +28,13 @@ public class Task {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public static String getTaskDesc() {
+		return taskDesc;
+	}
+
+	public static void setTaskDesc(String taskDesc) {
+		Task.taskDesc = taskDesc;
 	}
 }

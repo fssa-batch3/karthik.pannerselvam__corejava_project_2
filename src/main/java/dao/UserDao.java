@@ -8,6 +8,7 @@ package dao;
 
 import java.sql.*;
 
+
 import java.util.ArrayList;
 
 import dao.exception.DAOException;
@@ -16,18 +17,18 @@ import model.User;
 public class UserDao {
 
 // Getting Connection
-	public static Connection connect() throws DAOException {
+    public static Connection connect() throws DAOException {
+        Connection connect = null;
 
-		Connection connect = null;
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/taskapp", "root", "123456");
+        } catch (ClassNotFoundException | SQLException e) {
+            throw new DAOException(e);
+        }
 
-		try {
-			connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/corejava", "root", "123456");
-		} catch (SQLException e) {
-			throw new DAOException( e);
-		}
-		return connect;
-
-	}
+        return connect;
+    }
 
 //	Creating Statement and inserting the user's value
 	public boolean createUser(User user) throws DAOException {
@@ -41,12 +42,12 @@ public class UserDao {
 			std.setString(3, user.getPassword());
 
 			row = std.executeUpdate();
+		
 			System.out.println("Rows affected: " + row);
-
+			return row > 0;
 		} catch (SQLException e) {
 			throw new DAOException(e);
 		}
-		return row > 0;
 
 	}
 
@@ -73,33 +74,30 @@ public class UserDao {
 
 	}
 
-//	Getting the register user's details
-	public ArrayList<User> regiteredUsersList() throws DAOException {
-
-		ArrayList<User> users = new ArrayList<>();
-		final String SELECTQUERY = "Select * from users";
-		try (Statement std = connect().createStatement(); ResultSet rs = std.executeQuery(SELECTQUERY)) {
-
-			while (rs.next()) {
-
-				String email = rs.getString("email");
-				String password = rs.getString("password");
-
-				
-
-				users.add(new User(email,password));
-			}
-
-		} catch (SQLException e) {
-			throw new DAOException(e);
-		}
-
-		return users;
-
-	}
+////	Getting the register user's details
+//	public ArrayList<User> regiteredUsersList() throws DAOException {
+//
+//		ArrayList<User> users = new ArrayList<>();
+//		final String SELECTQUERY = "Select * from users";
+//		try (Statement std = connect().createStatement(); ResultSet rs = std.executeQuery(SELECTQUERY)) {
+//
+//			while (rs.next()) {
+//
+//				String email = rs.getString("email");
+//				String password = rs.getString("password");
+//				users.add(new User(email, password));
+//			}
+//
+//		} catch (SQLException e) {
+//			throw new DAOException(e);
+//		}
+//
+//		return users;
+//
+//	}
 
 //	Getting the user's details by email id
-	public boolean selectByEmail(String email) throws DAOException {
+	public boolean isEmailAlreadyExists(String email) throws DAOException {
 		final String SELECTQUERY = "SELECT email FROM users WHERE email = ?";
 
 		try (PreparedStatement pstmt = connect().prepareStatement(SELECTQUERY)) {
@@ -114,26 +112,35 @@ public class UserDao {
 		}
 	}
 
-
 //	Getting the email and password for log in
-	public boolean selectForLogin(User user) throws DAOException {
+	private String userPasswordFromDb;
 
-		final String SELECTQUERY = "SELECT email, password FROM users WHERE email = ? AND password = ?";
+	public String getUserPasswordFromDb() {
+		return userPasswordFromDb;
+	}
+
+	public void setUserPasswordFromDb(String userPasswordFromDb) {
+		this.userPasswordFromDb = userPasswordFromDb;
+	}
+
+	public boolean isLogin(User user) throws DAOException {
+
+		final String SELECTQUERY = "SELECT email, password FROM user WHERE email = ?";
 
 		try (PreparedStatement pstmt = connect().prepareStatement(SELECTQUERY)) {
 
 			pstmt.setString(1, user.getEmail());
-			pstmt.setString(2, user.getPassword());
 
 			try (ResultSet rs = pstmt.executeQuery()) {
-				return rs.next(); // Return true if the user email and password exists
+				String passwordfromDb = rs.getString("password");
+				setUserPasswordFromDb(passwordfromDb);
+				return rs.next();
 			}
 
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			throw new DAOException("Error in loggin in", e);
 		}
 
 	}
 
-	
 }

@@ -13,7 +13,7 @@ public class TaskService {
 		TaskDao taskdao = new TaskDao();
 		TaskValidation taskvalidation = new TaskValidation();
 		try {
-			taskvalidation.TaskName(task.getTaskName());
+			taskvalidation.taskName(task.getTaskName());
 			if(taskdao.createTask(task)) {
 				return true;
 			}else {
