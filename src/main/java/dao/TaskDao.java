@@ -16,7 +16,7 @@ public class TaskDao {
 	public boolean createTask(Task task) throws DAOException {
 		try {
 			  // Get connection
-            Connection c = UserDao.connect();
+            Connection c = UserDAO.connect();
             // Prepare SQL statement
             String insertQuery = "INSERT INTO Tasks (taskId,taskName,taskStatus) VALUES(?,?,?)";
             PreparedStatement statement = c.prepareStatement(insertQuery);
@@ -38,7 +38,7 @@ public class TaskDao {
 //	Delete task
 	public boolean deleteTask(Task task) throws DAOException{
 		try {
-			Connection c = UserDao.connect();
+			Connection c = UserDAO.connect();
 //			prepare sql Statement
 			String deleteQuery = "DELETE FROM tasks where taskId=?";
 			PreparedStatement statement = c.prepareStatement(deleteQuery);

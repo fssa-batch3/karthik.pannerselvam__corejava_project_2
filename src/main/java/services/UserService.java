@@ -2,12 +2,13 @@ package services;
 import model.User;
 import validation.UserValidation;
 import validation.exception.InvalidUserException;
-import dao.UserDao;
+import dao.UserDAO;
 import dao.exception.DAOException;
 import services.exception.ServiceException;
 public class UserService {
+//	Registering User 
 	public boolean registerUser(User user)throws ServiceException{
-		UserDao userDAO = new UserDao();
+		UserDAO userDAO = new UserDAO();
 		UserValidation uservalidation = new UserValidation();
 		try {
 			uservalidation.validateUser(user);
@@ -22,5 +23,16 @@ public class UserService {
 		}
 	}
 	
-	
+//	Logging in User
+	public boolean loginUser(User user)throws ServiceException{
+		UserDAO userDAO = new UserDAO();
+		UserValidation uValidation = new UserValidation();
+		try {
+			uValidation.validateEmail(user.getEmail());
+		}catch(InvalidUserException|| DAOException e){
+			throw new ServiceException("Error in logging in");
+		}
+		return false;
+		
+	}
 }

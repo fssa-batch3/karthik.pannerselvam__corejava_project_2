@@ -8,17 +8,34 @@ package dao;
 
 import java.sql.*;
 
+import io.github.cdimascio.dotenv.Dotenv;
+
 
 import java.util.ArrayList;
 
 import dao.exception.DAOException;
 import model.User;
 
-public class UserDao {
+public class UserDAO {
 
 // Getting Connection
     public static Connection connect() throws DAOException {
         Connection connect = null;
+        
+		String DB_URL;
+		String DB_USER;
+		String DB_PASSWORD;
+ 
+		if (System.getenv("CI") != null) {
+			DB_URL = System.getenv("DB_URL");
+			DB_USER = System.getenv("DB_USER");
+			DB_PASSWORD = System.getenv("DB_PASSWORD");
+		} else {
+			Dotenv env = Dotenv.load();
+			DB_URL = env.get("DB_URL");
+			DB_USER = env.get("DB_USER");
+			DB_PASSWORD = env.get("DB_PASSWORD");
+		}
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");

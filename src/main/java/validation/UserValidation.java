@@ -18,7 +18,7 @@ public class UserValidation {
 			throw new InvalidUserException("User details not valid");
 		}
 	}
-
+//	public boolean validateLogin()
 	public boolean validateName(String name) {
 		boolean match = false;
 		if (name == null)
