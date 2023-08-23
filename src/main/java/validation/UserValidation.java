@@ -58,7 +58,7 @@ public class UserValidation {
 		}
 	}
 
-	public boolean validateEmail(String email) {
+	public boolean validateEmail(String email)throws InvalidUserException {
 		boolean isMatch = false;
 
 		if (email == null)
@@ -73,7 +73,8 @@ public class UserValidation {
 		if (isMatch) {
 			System.out.println("The email address is: Valid");
 		} else {
-			System.out.println("The email address is: Invalid");
+			
+			throw new InvalidUserException("The email address is: Invalid");
 		}
 		return isMatch;
 	}

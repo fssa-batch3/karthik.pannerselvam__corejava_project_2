@@ -27,12 +27,16 @@ public class UserService {
 	public boolean loginUser(User user)throws ServiceException{
 		UserDAO userDAO = new UserDAO();
 		UserValidation uValidation = new UserValidation();
+		  
 		try {
 			uValidation.validateEmail(user.getEmail());
-		}catch(InvalidUserException|| DAOException e){
+			uValidation.validatePassword(user.getPassword());
+			
+			userDAO.isLogin(user);
+			
+			return userDAO.getUserPasswordFromDb().equals(user.getPassword());
+		}catch(InvalidUserException | DAOException e){
 			throw new ServiceException("Error in logging in");
 		}
-		return false;
-		
 	}
 }

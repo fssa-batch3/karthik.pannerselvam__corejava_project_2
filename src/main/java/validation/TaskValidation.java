@@ -1,22 +1,22 @@
 package validation;
 
+import model.Task;
 import validation.exception.InvalidTaskException;
 
 public class TaskValidation {
+	
+	public boolean validateNewTask(Task task) throws InvalidTaskException {
+		if (task == null) {
+			throw new InvalidTaskException("Task is null");
+		} else {
+			return ValidtaskDesc(task.getTaskName()) && ValidtaskStatus(task.getTaskStatus());
+		}
+	}
 
 	// Validating TaskName
 
 	public boolean taskName(String taskName) throws InvalidTaskException {
 		boolean match = false;
-
-//		if(taskName ==null) {
-//			return false;
-//		}
-
-//		String regex = "^[A-Za-z]\\w{2,29}$";
-//		Pattern tName = Pattern.compile(regex);
-//		Matcher m = tName.matcher(regex);
-//		match = m.matches();
 
 		if (taskName != null) {
 			System.out.println("The Taskname is valid");
@@ -28,7 +28,7 @@ public class TaskValidation {
 
 	// Validating task Description
 	
-	public boolean taskDesc(String taskDesc) throws InvalidTaskException {
+	public boolean ValidtaskDesc(String taskDesc) throws InvalidTaskException {
 		boolean match = false;
 		if (taskDesc != null) {
 			System.out.println("The Task Description is valid");
@@ -40,7 +40,7 @@ public class TaskValidation {
 	
 	// Validating task Status
 	
-	public boolean taskStatus(String taskStatus) throws InvalidTaskException {
+	public boolean ValidtaskStatus(String taskStatus) throws InvalidTaskException {
 		boolean match = false;
 		if (taskStatus == null)
 			return match;

@@ -1,17 +1,17 @@
 package model;
 
 public class Task {
-	private static String taskName;
-	private static String taskStatus;
-	private static String taskDesc;
-	private int id;
+	private  String taskName;
+	private  String taskStatus;
+	private  String taskDesc;
+	private int task_id;
 
 	public String getTaskName() {
 		return taskName;
 	}
 
 	public void setTaskName(String taskName) {
-		Task.taskName = taskName;
+		this.taskName = taskName;
 	}
 
 	public String getTaskStatus() {
@@ -19,22 +19,22 @@ public class Task {
 	}
 
 	public void setTaskStatus(String taskStatus) {
-		Task.taskStatus = taskStatus;
+		this.taskStatus = taskStatus;
 	}
 
-	public int getId() {
-		return id;
+	public int gettask_id() {
+		return task_id;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setId(int task_id) {
+		this.task_id = task_id;
 	}
 
-	public static String getTaskDesc() {
+	public  String getTaskDesc() {
 		return taskDesc;
 	}
 
-	public static void setTaskDesc(String taskDesc) {
-		Task.taskDesc = taskDesc;
+	public  void setTaskDesc(String taskDesc) {
+		this.taskDesc = taskDesc;
 	}
 }
