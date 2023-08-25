@@ -4,7 +4,6 @@ public class Task {
 	private  String taskName;
 	private  String taskStatus;
 	private  String taskDesc;
-	private int task_id;
 
 	public String getTaskName() {
 		return taskName;
@@ -22,14 +21,7 @@ public class Task {
 		this.taskStatus = taskStatus;
 	}
 
-	public int gettask_id() {
-		return task_id;
-	}
-
-	public void setId(int task_id) {
-		this.task_id = task_id;
-	}
-
+	
 	public  String getTaskDesc() {
 		return taskDesc;
 	}

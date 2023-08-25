@@ -1,4 +1,5 @@
-package dao;
+package utils;
 
 public class ConnectionUtil {
+
 }

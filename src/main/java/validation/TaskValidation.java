@@ -3,8 +3,18 @@ package validation;
 import model.Task;
 import validation.exception.InvalidTaskException;
 
+/**
+ * 
+ * @author KarthikPannerSelvam
+ *
+ */
+
+/**
+ * Checking whether the entered Task is null
+ */
+
 public class TaskValidation {
-	
+
 	public boolean validateNewTask(Task task) throws InvalidTaskException {
 		if (task == null) {
 			throw new InvalidTaskException("Task is null");
@@ -13,7 +23,9 @@ public class TaskValidation {
 		}
 	}
 
-	// Validating TaskName
+	/*
+	 * Validating TaskName
+	 */
 
 	public boolean taskName(String taskName) throws InvalidTaskException {
 		boolean match = false;
@@ -27,7 +39,7 @@ public class TaskValidation {
 	}
 
 	// Validating task Description
-	
+
 	public boolean ValidtaskDesc(String taskDesc) throws InvalidTaskException {
 		boolean match = false;
 		if (taskDesc != null) {
@@ -37,21 +49,14 @@ public class TaskValidation {
 		}
 		return match;
 	}
-	
+
 	// Validating task Status
-	
+
 	public boolean ValidtaskStatus(String taskStatus) throws InvalidTaskException {
 		boolean match = false;
 		if (taskStatus == null)
 			return match;
 
-		String status = "PENDING";
-		match = status.equalsIgnoreCase(status);
-		if (match) {
-			System.out.println("The task is PENDING");
-		} else {
-			System.out.println("The task is COMPLETED");
-		}
-		return match;
+		return (taskStatus.equalsIgnoreCase("PENDING") || taskStatus.equalsIgnoreCase("COMPLETED"));
 	}
 }

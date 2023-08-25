@@ -5,13 +5,11 @@ package dao;
 
  *
  */
-
-import java.sql.*;
-
-import io.github.cdimascio.dotenv.Dotenv;
-
-
-import java.util.ArrayList;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import dao.exception.DAOException;
 import model.User;
@@ -19,33 +17,30 @@ import model.User;
 public class UserDAO {
 
 // Getting Connection
-    public static Connection connect() throws DAOException {
-        Connection connect = null;
-        
+	public static Connection connect()  {
+		Connection connect = null;
+
 		String DB_URL;
 		String DB_USER;
 		String DB_PASSWORD;
- 
-		if (System.getenv("CI") != null) {
+
 			DB_URL = System.getenv("DB_URL");
 			DB_USER = System.getenv("DB_USER");
 			DB_PASSWORD = System.getenv("DB_PASSWORD");
-		} else {
-			Dotenv env = Dotenv.load();
-			DB_URL = env.get("DB_URL");
-			DB_USER = env.get("DB_USER");
-			DB_PASSWORD = env.get("DB_PASSWORD");
-		}
+		
 
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/taskapp", "root", "123456");
-        } catch (ClassNotFoundException | SQLException e) {
-            throw new DAOException(e);
-        }
-
-        return connect;
-    }
+			try {
+				Class.forName("com.mysql.cj.jdbc.Driver");
+				connect = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+			} catch ( SQLException e) {
+				e.printStackTrace();
+				throw new RuntimeException("Unable to connect to database",e);
+			} catch(ClassNotFoundException e) {
+				e.printStackTrace();
+				throw new RuntimeException("Database driver class not found",e);
+			}
+			return connect;
+	}
 
 //	Creating Statement and inserting the user's value
 	public boolean createUser(User user) throws DAOException {
@@ -59,7 +54,7 @@ public class UserDAO {
 			std.setString(3, user.getPassword());
 
 			row = std.executeUpdate();
-		
+
 			System.out.println("Rows affected: " + row);
 			return row > 0;
 		} catch (SQLException e) {
