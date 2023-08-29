@@ -78,6 +78,7 @@ public class TaskDao {
                 task.setTaskName(resultSet.getString("taskname"));
                 task.setTaskStatus(resultSet.getString("task_status"));
                 task.setTaskDesc(resultSet.getString("task_description"));
+        
                 // Add the task to the list
                 tasks.add(task);
             }
@@ -88,7 +89,7 @@ public class TaskDao {
         } catch (SQLException e) {
             throw new DAOException(e);
         }
-
+     
         return tasks;
     }
 }

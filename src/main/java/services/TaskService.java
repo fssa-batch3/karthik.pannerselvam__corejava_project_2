@@ -33,9 +33,8 @@ public class TaskService {
 		List<Task> tasksFromDB;
 		try {
 			tasksFromDB = TaskDao.getAllTasks();
-			System.out.format("%-8s | %-25s | %-15s | %-10s%n", "Sr.No.", "Task Name", "Description", "Status");
 			for (Task task : tasksFromDB) {
-				System.out.format("%-8d | %-25s | %-15s | %s%n", task.getTaskName(), task.getTaskDesc(), task.getTaskStatus());
+				System.out.println(task.toString());
 			}
 		} catch (DAOException e) {
 			throw new ServiceException(e.getMessage(),e);

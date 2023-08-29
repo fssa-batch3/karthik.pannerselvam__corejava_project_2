@@ -1,6 +1,11 @@
 package model;
 
 public class Task {
+	@Override
+	public String toString() {
+		return "Task [taskName=" + taskName + ", taskStatus=" + taskStatus + ", taskDesc=" + taskDesc + "]";
+	}
+
 	private  String taskName;
 	private  String taskStatus;
 	private  String taskDesc;
