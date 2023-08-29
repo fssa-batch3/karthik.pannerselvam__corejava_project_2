@@ -5,8 +5,13 @@ package dao;
  *
  */
 import model.Task;
+import util.ConnectionDB;
+
+import java.util.ArrayList;
+
 
 import java.sql.*;
+import java.util.List;
 
 import dao.exception.DAOException;
 
@@ -16,7 +21,7 @@ public class TaskDao {
 	public boolean createTask(Task task) throws DAOException {
 		try {
 			  // Get connection
-            Connection c = UserDAO.connect();
+            Connection c = ConnectionDB.getConnect();
             // Prepare SQL statement
             String insertQuery = "INSERT INTO tasks (taskname,task_status,task_description) VALUES(?,?,?)";
             PreparedStatement statement = c.prepareStatement(insertQuery);
@@ -54,4 +59,36 @@ public class TaskDao {
 //		}
 //	}
 	
+    public static List<Task> getAllTasks() throws DAOException {
+        List<Task> tasks = new ArrayList<>();
+
+        try {
+            // Get connection
+            Connection c = ConnectionDB.getConnect();
+            
+            // Prepare SQL statement
+            String selectQuery = "SELECT * FROM tasks";
+            PreparedStatement statement = c.prepareStatement(selectQuery);
+            
+            // Execute the query
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                Task task = new Task();
+                task.setTaskName(resultSet.getString("taskname"));
+                task.setTaskStatus(resultSet.getString("task_status"));
+                task.setTaskDesc(resultSet.getString("task_description"));
+                // Add the task to the list
+                tasks.add(task);
+            }
+
+            resultSet.close();
+            statement.close();
+            c.close();
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        }
+
+        return tasks;
+    }
 }

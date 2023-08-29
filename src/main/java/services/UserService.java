@@ -36,7 +36,7 @@ public class UserService {
 			
 			return userDAO.getUserPasswordFromDb().equals(user.getPassword());
 		}catch(InvalidUserException | DAOException e){
-			throw new ServiceException("Error in logging in");
+			throw new ServiceException("Error in logging in", null);
 		}
 	}
 }
