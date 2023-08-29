@@ -12,6 +12,7 @@ public class UserService {
 		UserValidation uservalidation = new UserValidation();
 		try {
 			uservalidation.validateUser(user);
+			userDAO.isEmailAlreadyExists(user.getEmail());
 			if(userDAO.createUser(user)) {
 				System.out.println(user.getName()+"Successfully registered!");
 				return true;

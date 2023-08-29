@@ -58,38 +58,27 @@ public class TaskDao {
 //			throw new DAOException(e);
 //		}
 //	}
-	
-    public static List<Task> getAllTasks() throws DAOException {
-        List<Task> tasks = new ArrayList<>();
+	public static List<Task> getAllTasks() throws DAOException {
+	    List<Task> tasks = new ArrayList<>();
 
-        try {
-            // Get connection
-            Connection c = ConnectionDB.getConnect();
-            
-            // Prepare SQL statement
-            String selectQuery = "SELECT * FROM tasks";
-            PreparedStatement statement = c.prepareStatement(selectQuery);
-            
-            // Execute the query
-            ResultSet resultSet = statement.executeQuery();
+	    try (Connection c = ConnectionDB.getConnect();
+	         PreparedStatement statement = c.prepareStatement("SELECT * FROM tasks");
+	         ResultSet resultSet = statement.executeQuery()) {
 
-            while (resultSet.next()) {
-                Task task = new Task();
-                task.setTaskName(resultSet.getString("taskname"));
-                task.setTaskStatus(resultSet.getString("task_status"));
-                task.setTaskDesc(resultSet.getString("task_description"));
-        
-                // Add the task to the list
-                tasks.add(task);
-            }
+	        while (resultSet.next()) {
+	            Task task = new Task();
+	            task.setTaskName(resultSet.getString("taskname"));
+	            task.setTaskStatus(resultSet.getString("task_status"));
+	            task.setTaskDesc(resultSet.getString("task_description"));
 
-            resultSet.close();
-            statement.close();
-            c.close();
-        } catch (SQLException e) {
-            throw new DAOException(e);
-        }
-     
-        return tasks;
-    }
+	            // Add the task to the list
+	            tasks.add(task);
+	        }
+	    } catch (SQLException e) {
+	        throw new DAOException(e);
+	    }
+
+	    return tasks;
+	}
+
 }

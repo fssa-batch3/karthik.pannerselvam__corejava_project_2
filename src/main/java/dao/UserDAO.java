@@ -25,15 +25,16 @@ public class UserDAO {
 //	Creating Statement and inserting the user's value
 	public boolean createUser(User user) throws DAOException {
 
-		final String QUERY = "INSERT INTO users (name,email,password) VALUES (?,?,?)";
+		final String query = "INSERT INTO users (name,email,password) VALUES (?,?,?)";
 		int row = 0;
-		try (PreparedStatement std = ConnectionDB.getConnect().prepareStatement(QUERY)) {
+		
+		try (PreparedStatement pst = ConnectionDB.getConnect().prepareStatement(query)) {
 
-			std.setString(1, user.getName());
-			std.setString(2, user.getEmail());
-			std.setString(3, user.getPassword());
+			pst.setString(1, user.getName());
+			pst.setString(2, user.getEmail());
+			pst.setString(3, user.getPassword());
 
-			row = std.executeUpdate();
+			row = pst.executeUpdate();
 
 			System.out.println("Rows affected: " + row);
 			return row > 0;
@@ -46,11 +47,11 @@ public class UserDAO {
 //	Delete the user
 	public boolean deleteUser(String email) throws DAOException {
 
-		final String DELETEQUERY = "DELETE FROM users where email=?";
+		final String deleteQuery = "DELETE FROM users where email=?";
 
 		int row = 0;
 
-		try (PreparedStatement std = ConnectionDB.getConnect().prepareStatement(DELETEQUERY)) {
+		try (PreparedStatement std = ConnectionDB.getConnect().prepareStatement(deleteQuery)) {
 
 			std.setString(1, email);
 
@@ -68,9 +69,9 @@ public class UserDAO {
 
 //	Getting the user's details by email id
 	public boolean isEmailAlreadyExists(String email) throws DAOException {
-		final String SELECTQUERY = "SELECT email FROM users WHERE email = ?";
+		final String selectQuery = "SELECT email FROM users WHERE email = ?";
 
-		try (PreparedStatement pstmt = ConnectionDB.getConnect().prepareStatement(SELECTQUERY)) {
+		try (PreparedStatement pstmt = ConnectionDB.getConnect().prepareStatement(selectQuery)) {
 
 			pstmt.setString(1, email);
 
@@ -95,9 +96,9 @@ public class UserDAO {
 
 	public boolean isLogin(User user) throws DAOException {
 
-		final String SELECTQUERY = "SELECT email, password FROM user WHERE email = ?";
+		final String selectQuery = "SELECT email, password FROM user WHERE email = ?";
 
-		try (PreparedStatement pstmt = ConnectionDB.getConnect().prepareStatement(SELECTQUERY)) {
+		try (PreparedStatement pstmt = ConnectionDB.getConnect().prepareStatement(selectQuery)) {
 
 			pstmt.setString(1, user.getEmail());
 
