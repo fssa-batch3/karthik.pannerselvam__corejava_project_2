@@ -22,32 +22,32 @@ public class TaskValidation {
 			return ValidtaskDesc(task.getTaskName()) && ValidtaskStatus(task.getTaskStatus());
 		}
 	}
-
 	/*
 	 * Validating TaskName
 	 */
 
 	public boolean taskName(String taskName) throws InvalidTaskException {
-		boolean match = false;
 
 		if (taskName != null) {
 			System.out.println("The Taskname is valid");
+			return true;
 		} else {
 			throw new InvalidTaskException("The Taskname Cannot be null , Enter a name for your Task");
 		}
-		return match;
+		
 	}
 
 	// Validating task Description
 
 	public boolean ValidtaskDesc(String taskDesc) throws InvalidTaskException {
-		boolean match = false;
 		if (taskDesc != null) {
 			System.out.println("The Task Description is valid");
+			return true;
 		} else {
 			System.out.println("The task Description cannot be empty");
+			throw new InvalidTaskException("The  Task Description cannot be empty");
 		}
-		return match;
+		
 	}
 
 	// Validating task Status

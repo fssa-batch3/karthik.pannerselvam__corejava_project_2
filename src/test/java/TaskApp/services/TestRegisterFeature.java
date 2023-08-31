@@ -25,7 +25,7 @@ public class TestRegisterFeature {
 	@Test
 	public void testRegistrationSuccess() {
 		UserService userService = new UserService();
-		User user1 = new User("arunkumar", "Karthik@gmail.com", "Arun@2023");
+		User user1 = new User("arunkumar", "Karthik9@gmail.com", "Arun@2023");
 		
 		try {
 			assertTrue(userService.registerUser(user1));
@@ -35,11 +35,11 @@ public class TestRegisterFeature {
 		}
 	}
 
-//	@Test
+@Test
 
 	public void testInvalidPassword() {
 		UserService userservice = new UserService();
-		User user1 = new User("arunkumar", "Arun19@gmail.com", "Arun@123");
+		User user1 = new User("arunkumar", "Arun19@gmail.com", "Arun123");
 		try {
 			assertFalse(userservice.registerUser(user1));
 		} catch (ServiceException e) {
@@ -47,7 +47,7 @@ public class TestRegisterFeature {
 		}
 	}
 
-//	@Test
+	@Test
 
 	public void testUserNull() {
 		UserService userService = new UserService();

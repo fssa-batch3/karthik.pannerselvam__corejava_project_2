@@ -1,14 +1,14 @@
 package TaskApp.Validation;
 
-import validation.TaskValidation;
-import validation.exception.InvalidTaskException;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.Test;
 
 import model.Task;
+import validation.TaskValidation;
+import validation.exception.InvalidTaskException;
 
 public class TestAddTaskValidator {
 	TaskValidation taskValidator = new TaskValidation();
@@ -21,8 +21,9 @@ public class TestAddTaskValidator {
 		Task task = new Task();
 		task.setTaskName("Demo Task");
 		task.setTaskStatus("COMPLETED");
+		task.setTaskDesc("Completed the demo task");
 		try {
-			taskValidator.validateNewTask(task);
+			assertTrue(taskValidator.validateNewTask(task));
 		} catch (InvalidTaskException e) {
 			fail();
 		}
@@ -36,6 +37,7 @@ public class TestAddTaskValidator {
 		Task task = new Task();
 		task.setTaskName("");
 		task.setTaskStatus("PENDING");
+		task.setTaskDesc("Attach the file while studying");
 
 		try {
 			taskValidator.validateNewTask(task);
@@ -45,7 +47,7 @@ public class TestAddTaskValidator {
 	}
 
 	/*
-	 * Testing the Empty task Name
+	 * Testing the Empty task 
 	 */
 	@Test
 	public void testTaskValidatorOnTaskNull() {
@@ -53,7 +55,7 @@ public class TestAddTaskValidator {
 		try {
 			taskValidator.validateNewTask(task);
 		}catch(InvalidTaskException e){
-			assertEquals("Task is Null",e.getMessage());
+			assertEquals("Task is null",e.getMessage());
 		}
 	}
 }

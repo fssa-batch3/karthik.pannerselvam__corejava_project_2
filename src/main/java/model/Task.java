@@ -1,6 +1,18 @@
 package model;
 
 public class Task {
+
+	public Task(String taskName, String taskStatus, String taskDesc) {
+		super();
+		this.taskName = taskName;
+		this.taskStatus = taskStatus;
+		this.taskDesc = taskDesc;
+	}
+	
+	public Task() {
+		
+	}
+
 	@Override
 	public String toString() {
 		return "Task [taskName=" + taskName + ", taskStatus=" + taskStatus + ", taskDesc=" + taskDesc + "]";

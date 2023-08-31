@@ -60,7 +60,6 @@ public class TaskDao {
 //	}
 	public static List<Task> getAllTasks() throws DAOException {
 	    List<Task> tasks = new ArrayList<>();
-
 	    try (Connection c = ConnectionDB.getConnect();
 	         PreparedStatement statement = c.prepareStatement("SELECT * FROM tasks");
 	         ResultSet resultSet = statement.executeQuery()) {

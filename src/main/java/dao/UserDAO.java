@@ -25,7 +25,7 @@ public class UserDAO {
 //	Creating Statement and inserting the user's value
 	public boolean createUser(User user) throws DAOException {
 
-		final String query = "INSERT INTO users (name,email,password) VALUES (?,?,?)";
+		final String query = "INSERT INTO users (username,email,password) VALUES (?,?,?)";
 		int row = 0;
 		
 		try (PreparedStatement pst = ConnectionDB.getConnect().prepareStatement(query)) {
@@ -119,30 +119,24 @@ public class UserDAO {
 	 */
 
 	public List<User> getAllUsers() throws DAOException {
-		List<User> users = new ArrayList<>();
+	    List<User> users = new ArrayList<>();
 
-		try {
-			// Get connection
-			Connection c = ConnectionDB.getConnect();
+	    try (Connection c = ConnectionDB.getConnect();
+	         PreparedStatement statement = c.prepareStatement("SELECT * FROM user");
+	         ResultSet resultSet = statement.executeQuery()) {
 
-			// Prepare SQL statement
-			String selectQuery = "SELECT * FROM user";
-			PreparedStatement statement = c.prepareStatement(selectQuery);
+	        while (resultSet.next()) {
+	            String userName = resultSet.getString("username");
+	            String userEmail = resultSet.getString("email");
 
-			// Execute the query
-			ResultSet resultSet = statement.executeQuery();
+	            // create user object using retrieved data
+	            users.add(new User(userName, userEmail));
+	        }
+	    } catch (SQLException e) {
+	        throw new DAOException(e);
+	    }
 
-			while (resultSet.next()) {
-				String userName = resultSet.getString("name");
-				String userEmail = resultSet.getString("email");
-
-				// create user object using retrived data
-				users.add(new User(userName,userEmail));
-			}
-			return users;
-
-		} catch (SQLException e) {
-			throw new DAOException(e);
-		}
+	    return users;
 	}
+
 }
