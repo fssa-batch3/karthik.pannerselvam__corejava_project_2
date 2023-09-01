@@ -17,12 +17,12 @@
 		<maven.compiler.target>17</maven.compiler.target>
 
 		<sonar.organization>fssa-batch3</sonar.organization>
-		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
+		<sonar.host.url>https://sonarscloud.io</sonar.host.url>
 		<sonar.projectKey>fssa-batch3_karthik_pannerselvam_corejava_project_2</sonar.projectKey>
 	</properties>
 
 	<dependencies>
-		
+
 		<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
 		<dependency>
 			<groupId>mysql</groupId>
@@ -30,7 +30,6 @@
 			<version>8.0.33</version>
 		</dependency>
 
-		
 
 		<!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter -->
 		<dependency>
@@ -53,6 +52,6 @@
 
 	<build>
 		<finalName>taskapp</finalName>
-		
+
 	</build>
 </project>
