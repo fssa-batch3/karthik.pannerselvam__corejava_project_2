@@ -69,7 +69,7 @@ public class UserDAO {
 
 //	Getting the user's details by email id
 	public boolean isEmailAlreadyExists(String email) throws DAOException {
-		final String selectQuery = "SELECT email FROM users WHERE email = ?";
+		final String selectQuery = "SELECT username,email FROM users WHERE email = ?";
 
 		try (PreparedStatement pstmt = ConnectionDB.getConnect().prepareStatement(selectQuery)) {
 
@@ -113,6 +113,8 @@ public class UserDAO {
 		}
 
 	}
+	
+	
 
 	/*
 	 * Getting all users

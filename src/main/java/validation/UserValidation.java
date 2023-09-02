@@ -64,7 +64,7 @@ public class UserValidation {
 		if (email == null)
 			return false;
 		String regex = "^.*@.*\\..*$";
-		System.out.println("email");
+		System.out.println("Invalid email: email is null or empty");
 
 		Pattern pattern = Pattern.compile(regex);
 		Matcher matcher = pattern.matcher(email);
