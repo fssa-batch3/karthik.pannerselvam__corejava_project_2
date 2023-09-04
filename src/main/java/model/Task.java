@@ -2,11 +2,12 @@ package model;
 
 public class Task {
 
-	public Task(String taskName, String taskStatus, String taskDesc) {
+	public Task(String taskName, String taskStatus, String taskDesc, String userEmail) {
 		super();
 		this.taskName = taskName;
 		this.taskStatus = taskStatus;
 		this.taskDesc = taskDesc;
+		this.userEmail  = userEmail;
 	}
 	
 	public Task() {
@@ -15,12 +16,14 @@ public class Task {
 
 	@Override
 	public String toString() {
-		return "Task [taskName=" + taskName + ", taskStatus=" + taskStatus + ", taskDesc=" + taskDesc + "]";
+		return "Task [taskName=" + taskName + ", taskStatus=" + taskStatus + ", taskDesc=" + taskDesc + ", userEmail="
+				+ userEmail + "]";
 	}
 
 	private  String taskName;
 	private  String taskStatus;
 	private  String taskDesc;
+	private String userEmail;
 
 	public String getTaskName() {
 		return taskName;
@@ -45,5 +48,12 @@ public class Task {
 
 	public  void setTaskDesc(String taskDesc) {
 		this.taskDesc = taskDesc;
+	}
+	public String getUserEmail() {
+		return userEmail;
+	}
+
+	public void setUserEmail(String userEmail) {
+		this.userEmail = userEmail;
 	}
 }

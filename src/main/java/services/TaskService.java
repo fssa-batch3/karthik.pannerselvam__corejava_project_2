@@ -42,4 +42,18 @@ public class TaskService {
 		return tasksFromDB;
 
 	}
+	public static void main(String args[])  {
+		TaskDao task = new TaskDao();
+		Task newTask = new Task();
+		newTask.setTaskName("Finish the project backend");
+		newTask.setTaskStatus("PENDING");
+		newTask.setTaskDesc("Complete the test case part of the Add task feature");
+		newTask.setUserEmail("Karthik@gmail.com");
+		try {
+			task.createTask(newTask);
+		} catch (DAOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }

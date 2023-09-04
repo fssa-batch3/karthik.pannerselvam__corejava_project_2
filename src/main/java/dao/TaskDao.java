@@ -23,11 +23,13 @@ public class TaskDao {
 			  // Get connection
             Connection c = ConnectionDB.getConnect();
             // Prepare SQL statement
-            String insertQuery = "INSERT INTO tasks (taskname,task_status,task_description) VALUES(?,?,?)";
+            String insertQuery = "INSERT INTO tasks (taskname,task_status,task_description,user_email) VALUES(?,?,?,?)";
             PreparedStatement statement = c.prepareStatement(insertQuery);
             statement.setString(1, task.getTaskName());
             statement.setString(2, task.getTaskStatus());
             statement.setString(3, task.getTaskDesc());
+            statement.setString(4, task.getUserEmail());
+
             // Execute the query
             int rows = statement.executeUpdate();
             
@@ -69,6 +71,7 @@ public class TaskDao {
 	            task.setTaskName(resultSet.getString("taskname"));
 	            task.setTaskStatus(resultSet.getString("task_status"));
 	            task.setTaskDesc(resultSet.getString("task_description"));
+	            task.setUserEmail(resultSet.getString("user_email"));
 
 	            // Add the task to the list
 	            tasks.add(task);
@@ -78,6 +81,21 @@ public class TaskDao {
 	    }
 
 	    return tasks;
+	}
+	
+	public static void main(String args[])  {
+		TaskDao task = new TaskDao();
+		Task newTask = new Task();
+		newTask.setTaskName("Finish the project backend");
+		newTask.setTaskStatus("PENDING");
+		newTask.setTaskDesc("Complete the test case part of the Add task feature");
+		newTask.setUserEmail("Karthik@gmail.com");
+		try {
+			task.createTask(newTask);
+		} catch (DAOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }
