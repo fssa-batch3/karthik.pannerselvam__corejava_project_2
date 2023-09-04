@@ -12,7 +12,6 @@ public class UserService {
 		UserValidation uservalidation = new UserValidation();
 		try {
 			uservalidation.validateUser(user);
-			userDAO.isEmailAlreadyExists(user.getEmail());
 			if(userDAO.createUser(user)) {
 				System.out.println(user.getName()+"Successfully registered!");
 				return true;
@@ -37,6 +36,7 @@ public class UserService {
 			
 			return userDAO.getUserPasswordFromDb().equals(user.getPassword());
 		}catch(InvalidUserException | DAOException e){
+			e.printStackTrace();
 			throw new ServiceException("Error in logging in", null);
 		}
 	}

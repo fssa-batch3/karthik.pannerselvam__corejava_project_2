@@ -18,16 +18,15 @@ import dao.exception.DAOException;
 import model.Task;
 import model.User;
 import util.ConnectionDB;
-public class UserDAO {
 
-	
+public class UserDAO {
 
 //	Creating Statement and inserting the user's value
 	public boolean createUser(User user) throws DAOException {
 
 		final String query = "INSERT INTO users (username,email,password) VALUES (?,?,?)";
 		int row = 0;
-		
+
 		try (PreparedStatement pst = ConnectionDB.getConnect().prepareStatement(query)) {
 
 			pst.setString(1, user.getName());
@@ -69,7 +68,7 @@ public class UserDAO {
 
 //	Getting the user's details by email id
 	public boolean isEmailAlreadyExists(String email) throws DAOException {
-		final String selectQuery = "SELECT username,email FROM users WHERE email = ?";
+		final String selectQuery = "SELECT email FROM users WHERE email = ?";
 
 		try (PreparedStatement pstmt = ConnectionDB.getConnect().prepareStatement(selectQuery)) {
 
@@ -96,49 +95,54 @@ public class UserDAO {
 
 	public boolean isLogin(User user) throws DAOException {
 
-		final String selectQuery = "SELECT email, password FROM user WHERE email = ?";
+		final String selectQuery = "SELECT email, password FROM users WHERE email = ?";
 
 		try (PreparedStatement pstmt = ConnectionDB.getConnect().prepareStatement(selectQuery)) {
 
 			pstmt.setString(1, user.getEmail());
 
 			try (ResultSet rs = pstmt.executeQuery()) {
-				String passwordfromDb = rs.getString("password");
-				setUserPasswordFromDb(passwordfromDb);
-				return rs.next();
-			}
 
+				if (rs.next()) {
+					String passwordfromDb = rs.getString("password");
+					setUserPasswordFromDb(passwordfromDb);
+					return true;
+				}
+
+			}
+			return false;
 		} catch (SQLException e) {
+			e.printStackTrace();
 			throw new DAOException("Error in loggin in", e);
+
 		}
 
 	}
-	
-	
+
 
 	/*
 	 * Getting all users
 	 */
 
 	public List<User> getAllUsers() throws DAOException {
-	    List<User> users = new ArrayList<>();
+		List<User> users = new ArrayList<>();
 
-	    try (Connection c = ConnectionDB.getConnect();
-	         PreparedStatement statement = c.prepareStatement("SELECT * FROM user");
-	         ResultSet resultSet = statement.executeQuery()) {
+		try (Connection c = ConnectionDB.getConnect();
+				PreparedStatement statement = c.prepareStatement("SELECT * FROM user");
+				ResultSet resultSet = statement.executeQuery()) {
 
-	        while (resultSet.next()) {
-	            String userName = resultSet.getString("username");
-	            String userEmail = resultSet.getString("email");
+			while (resultSet.next()) {
+				String userName = resultSet.getString("username");
+				String userEmail = resultSet.getString("email");
 
-	            // create user object using retrieved data
-	            users.add(new User(userName, userEmail));
-	        }
-	    } catch (SQLException e) {
-	        throw new DAOException(e);
-	    }
+				// create user object using retrieved data
+				users.add(new User(userName, userEmail));
+			}
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		}
 
-	    return users;
+		return users;
 	}
 
 }

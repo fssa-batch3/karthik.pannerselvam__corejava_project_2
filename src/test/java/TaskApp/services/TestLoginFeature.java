@@ -1,6 +1,5 @@
 package TaskApp.services;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -21,8 +20,7 @@ public class TestLoginFeature {
 
 			assertTrue(loginUser.loginUser(user));
 		} catch (ServiceException e) {
-//			e.printStackTrace();
-			fail("error while logging in ");
+			fail("error while logging in "+e.getMessage());
 		}
 	}
 	@Test

@@ -2,22 +2,25 @@ package validation;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import validation.exception.InvalidUserException;
 
+import dao.UserDAO;
+import dao.exception.DAOException;
 import model.User;
+import validation.exception.InvalidUserException;
 
 public class UserValidation {
 
 	public boolean validateUser(User user) throws InvalidUserException {
 
 		if (user != null && validateName(user.getName()) && validatePassword(user.getPassword())
-				&& validateEmail(user.getEmail())) {
-			
+				&& validateEmail(user.getEmail()) && isEmailExist(user.getEmail())) {
+
 			return true;
-		} else { 
+		} else {
 			throw new InvalidUserException("User details not valid");
 		}
 	}
+
 //	public boolean validateLogin()
 	public boolean validateName(String name) {
 		boolean match = false;
@@ -28,14 +31,14 @@ public class UserValidation {
 		Pattern pattern = Pattern.compile(regex);
 		Matcher compare = pattern.matcher(name);
 		match = compare.matches();
-		if (match) { 
+		if (match) {
 			System.out.println("They given username is valid.");
 			return true;
 		} else {
 			System.out.println("They given username is Invalid.");
 			return false;
 		}
-		
+
 	}
 
 	public boolean validatePassword(String password) {
@@ -58,7 +61,7 @@ public class UserValidation {
 		}
 	}
 
-	public boolean validateEmail(String email)throws InvalidUserException {
+	public boolean validateEmail(String email) throws InvalidUserException {
 		boolean isMatch = false;
 
 		if (email == null)
@@ -73,9 +76,25 @@ public class UserValidation {
 		if (isMatch) {
 			System.out.println("The email address is: Valid");
 		} else {
-			
+
 			throw new InvalidUserException("The email address is: Invalid");
 		}
 		return isMatch;
 	}
+
+	public boolean isEmailExist(String email) throws InvalidUserException {
+
+		UserDAO userDAO = new UserDAO();
+
+		try {
+			if (userDAO.isEmailAlreadyExists(email))
+				throw new InvalidUserException("Thjansdcjnkasdcj,l");
+
+		} catch (DAOException e) {
+			e.printStackTrace();
+		}
+		return true;
+
+	}
+
 }
