@@ -26,32 +26,32 @@ public class TaskService {
 		}
 	}
 
-	/*
+	/* 
 	 * List all task
 	 */
-	public List<Task> getAllTasks() throws ServiceException {
+	public List<Task> getAllTasks(String user_email) throws ServiceException {
 		List<Task> tasksFromDB;
 		try {
-			tasksFromDB = TaskDao.getAllTasks();
+			tasksFromDB = TaskDao.getAllTasks(user_email);
 			for (Task task : tasksFromDB) {
 				System.out.println(task.toString());
 			}
 		} catch (DAOException e) {
-			throw new ServiceException(e.getMessage(),e);
+			throw new ServiceException(e);
 		}
 		return tasksFromDB;
 
 	}
 	public static void main(String args[])  {
-		TaskDao task = new TaskDao();
 		Task newTask = new Task();
+		TaskService service = new TaskService();
 		newTask.setTaskName("Finish the project backend");
 		newTask.setTaskStatus("PENDING");
 		newTask.setTaskDesc("Complete the test case part of the Add task feature");
 		newTask.setUserEmail("Karthik@gmail.com");
 		try {
-			task.createTask(newTask);
-		} catch (DAOException e) {
+		System.out.println(service.newTask(newTask));
+		} catch (ServiceException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

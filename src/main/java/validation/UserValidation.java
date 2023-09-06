@@ -67,7 +67,6 @@ public class UserValidation {
 		if (email == null)
 			return false;
 		String regex = "^.*@.*\\..*$";
-		System.out.println("Invalid email: email is null or empty");
 
 		Pattern pattern = Pattern.compile(regex);
 		Matcher matcher = pattern.matcher(email);
@@ -88,10 +87,11 @@ public class UserValidation {
 
 		try {
 			if (userDAO.isEmailAlreadyExists(email))
-				throw new InvalidUserException("Thjansdcjnkasdcj,l");
+				return true;
 
-		} catch (DAOException e) {
+		} catch (DAOException e)  {
 			e.printStackTrace();
+			throw new InvalidUserException(e);
 		}
 		return true;
 

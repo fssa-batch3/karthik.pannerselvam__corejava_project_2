@@ -1,10 +1,13 @@
 package TaskApp.services;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.Test;
 
+import dao.exception.DAOException;
 import model.User;
 import services.UserService;
 import services.exception.ServiceException;
@@ -15,10 +18,11 @@ public class TestLoginFeature {
 		try {
 			UserService loginUser = new UserService();
 			User user = new User();
-			user.setEmail("karthik@gmail.com");
-			user.setPassword("karthikumar");
-
-			assertTrue(loginUser.loginUser(user));
+			user.setEmail("muthu@gmail.com");
+			user.setPassword("Karthik@123");
+			
+			assertEquals(user.getEmail(),loginUser.loginUser(user));
+			
 		} catch (ServiceException e) {
 			fail("error while logging in "+e.getMessage());
 		}
@@ -66,4 +70,42 @@ public class TestLoginFeature {
 			e.getMessage();
 		}
 	}
-}
+	
+	 @Test
+	    public void testGetUserById() {
+	        // Taking  user ID from Db for testing
+	        int userId = 1; 
+	        UserService userService = new UserService();
+	        try {
+	            User user = userService.getUserById(userId);
+
+	            assertNotNull(user);
+	            assertEquals(userId, user.getId());
+	            assertNotNull(user.getName());
+	            assertNotNull(user.getEmail());
+	            assertNotNull(user.getPassword());
+
+	        } catch (ServiceException e) {
+	            fail("ServiceException should not be thrown: " + e.getMessage());
+	        }
+	    }
+	 
+	    @Test
+	    public void testUpdateUser() {
+	        // Creating a user object with updated information
+	        User updatedUser = new User();
+	        UserService userService = new UserService();
+	        updatedUser.setId(1); // Replace with the actual user ID you want to update
+	        updatedUser.setName("Muthu");
+	        updatedUser.setEmail("muthu@gmail.com");
+	        updatedUser.setPassword("Karthik@123");
+
+	        try {
+	            boolean result = userService.updateUser(updatedUser);
+	            assertTrue(result); // Assert that the update was successful
+	        } catch (ServiceException e) {
+	            e.printStackTrace();
+	            fail("Exception should not be thrown during update");
+	        }
+	    }
+} 
