@@ -13,7 +13,12 @@ import util.ConnectionDB;
 
 public class UserDAO {
 
-//	Creating Statement and inserting the user's value
+	/**
+	 * 
+	 * @param user
+	 * @return boolean
+	 * @throws DAOException
+	 */
 	public boolean createUser(User user) throws DAOException {
 
 		final String query = "INSERT INTO users (username,email,password) VALUES (?,?,?)";
@@ -32,30 +37,57 @@ public class UserDAO {
 		} catch (SQLException e) {
 			throw new DAOException(e);
 		}
- 
+
 	}
 
-//	Delete the user
-	public boolean deleteUser(String email) throws DAOException {
+////	Delete the user
+//	public boolean deleteUser(String email) throws DAOException {
+//
+//		final String deleteQuery = "DELETE FROM users where email=?";
+//
+//		int row = 0;
+//
+//		try (PreparedStatement std = ConnectionDB.getConnect().prepareStatement(deleteQuery)) {
+//
+//			std.setString(1, email);
+//
+//			row = std.executeUpdate();
+//
+//			System.out.println("Deleted row: " + row);
+//
+//		} catch (SQLException e) {
+//			throw new DAOException(e);
+//		}
+//
+//		return row > 0;
+//
+//	}
+	/**
+	 * 
+	 * @param email
+	 * @return User
+	 * @throws DAOException
+	 */
+	public User getUserByEmailForUserDetails(String email) throws DAOException {
+		final String selectQuery = "SELECT * FROM users WHERE email = ?";
+		User user = new User();
 
-		final String deleteQuery = "DELETE FROM users where email=?";
+		try (PreparedStatement pstmt = ConnectionDB.getConnect().prepareStatement(selectQuery)) {
+			pstmt.setString(1, email);
 
-		int row = 0;
-
-		try (PreparedStatement std = ConnectionDB.getConnect().prepareStatement(deleteQuery)) {
-
-			std.setString(1, email);
-
-			row = std.executeUpdate();
-
-			System.out.println("Deleted row: " + row);
-
+			try (ResultSet rs = pstmt.executeQuery()) {
+				if (rs.next()) {
+					user.setName(rs.getString("username"));
+					user.setEmail(rs.getString("email"));
+					user.setId(rs.getInt("user_id"));
+					user.setPassword(rs.getString("password"));
+				}
+			}
 		} catch (SQLException e) {
 			throw new DAOException(e);
 		}
 
-		return row > 0;
-
+		return user;
 	}
 
 	/**
@@ -79,28 +111,34 @@ public class UserDAO {
 		}
 	}
 
-	public User getUserByIdForUserDetails(int id) throws DAOException {
-
-		final String selectQuery = "SELECT * From users WHERE user_id= ?";
-		User user = new User();
-		try (PreparedStatement pstmt = ConnectionDB.getConnect().prepareStatement(selectQuery)) {
-
-			pstmt.setInt(1, id);
-
-			try (ResultSet rs = pstmt.executeQuery()) {
-				if (rs.next()) {
-					user.setName(rs.getString("username"));
-					user.setEmail(rs.getString("email"));
-					user.setId(rs.getInt("user_id"));
-					user.setPassword(rs.getString("password"));
-				}
-
-			}
-		} catch (SQLException e) {
-			throw new DAOException(e);
-		}
-		return user;
-	}
+	/**
+	 * 
+	 * @param id
+	 * @return User
+	 * @throws DAOException
+	 */
+//	public User getUserByIdForUserDetails(int id) throws DAOException {
+//
+//		final String selectQuery = "SELECT * From users WHERE user_id= ?";
+//		User user = new User();
+//		try (PreparedStatement pstmt = ConnectionDB.getConnect().prepareStatement(selectQuery)) {
+//
+//			pstmt.setInt(1, id);
+//
+//			try (ResultSet rs = pstmt.executeQuery()) {
+//				if (rs.next()) {
+//					user.setName(rs.getString("username"));
+//					user.setEmail(rs.getString("email"));
+//					user.setId(rs.getInt("user_id"));
+//					user.setPassword(rs.getString("password"));
+//				}
+//
+//			}
+//		} catch (SQLException e) {
+//			throw new DAOException(e);
+//		}
+//		return user;
+//	}
 
 	private String userPasswordFromDb;
 
@@ -140,10 +178,11 @@ public class UserDAO {
 
 	}
 
-	/*
-	 * Getting all users
+	/**
+	 * 
+	 * @return List
+	 * @throws DAOException
 	 */
-
 	public List<User> getAllUsers() throws DAOException {
 		List<User> users = new ArrayList<>();
 

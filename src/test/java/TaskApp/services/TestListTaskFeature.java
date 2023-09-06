@@ -15,7 +15,7 @@ public class TestListTaskFeature {
 	public void testListTasksSuccess() {
 		try {
 			TaskService taskService = new TaskService();
-			List<Task> testTasks = taskService.getAllTasks();
+			List<Task> testTasks = taskService.getAllTasks("muthu@gmail.com");
 			assertTrue(testTasks.size() > 0);
 		} catch (ServiceException e) {
 			e.printStackTrace();

@@ -8,7 +8,7 @@ import dao.exception.DAOException;
 import model.User;
 import validation.exception.InvalidUserException;
 
-public class UserValidation {
+public class UserValidation { 
 
 	public boolean validateUser(User user) throws InvalidUserException {
 

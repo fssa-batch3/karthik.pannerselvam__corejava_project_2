@@ -30,12 +30,12 @@ public class UserService {
 		}
 	}
 
-/**
- * 
- * @param user
- * @return String
- * @throws ServiceException
- */
+	/**
+	 * 
+	 * @param user
+	 * @return String
+	 * @throws ServiceException
+	 */
 	public String loginUser(User user) throws ServiceException {
 		UserDAO userDAO = new UserDAO();
 		UserValidation uValidation = new UserValidation();
@@ -55,36 +55,54 @@ public class UserService {
 			throw new ServiceException("Error in logging in");
 		}
 	}
-	
+
+//	/**
+//	 * 
+//	 * @param id
+//	 * @return User
+//	 * @throws ServiceException
+//	 */
+//
+//	public User getUserById(int id) throws ServiceException {
+//		UserDAO userDAO = new UserDAO();
+//		User user = new User();
+//		try {
+//			return userDAO.getUserByIdForUserDetails(id);
+//		} catch (DAOException e) {
+//			e.printStackTrace();
+//		}
+//		return user;
+//	}
+
 	/**
 	 * 
-	 * @param id
+	 * @param user
+	 * @return boolean
+	 * @throws ServiceException
+	 */
+	public boolean updateUser(User user) throws ServiceException {
+		UserDAO UserDAO = new UserDAO();
+		UserValidation uservalidate = new UserValidation();
+		try {
+			uservalidate.validateUser(user);
+			return UserDAO.updateUser(user);
+		} catch (DAOException | InvalidUserException e) {
+			throw new ServiceException(e);
+		}
+	}
+
+	/**
+	 * 
+	 * @param email
 	 * @return User
 	 * @throws ServiceException
 	 */
-	
-	public User getUserById(int id) throws  ServiceException {
-		UserDAO userDAO = new UserDAO();
-		User user = new User();
+	public User getUserByEmail(String email) throws ServiceException {
+		UserDAO UserDao = new UserDAO();
 		try {
-			return userDAO.getUserByIdForUserDetails(id);
+			return UserDao.getUserByEmailForUserDetails(email);
 		} catch (DAOException e) {
-			e.printStackTrace();
+			throw new ServiceException("Error retrieving user by email");
 		}
-	return user; 
 	}
-	
-
-	 public boolean updateUser(User user) throws ServiceException {
-		 UserDAO UserDAO = new UserDAO();
-		 UserValidation uservalidate = new UserValidation();
-	        try {
-	        	uservalidate.validateUser(user);
-	            return UserDAO.updateUser(user);
-	        } catch (DAOException | InvalidUserException e ) {
-	            throw new ServiceException(e);
-	        }
-	    }
-	}
-	
-
+}

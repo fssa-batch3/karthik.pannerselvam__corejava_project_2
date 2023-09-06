@@ -21,7 +21,7 @@ public class TaskDao {
 	public boolean createTask(Task task) throws DAOException {
 		try {
 			// Get connection
-			Connection c = ConnectionDB.getConnect();
+			Connection c = ConnectionDB.getConnect(); 
 			// Prepare SQL statement
 			String insertQuery = "INSERT INTO tasks (taskname,task_status,task_description,user_email) VALUES(?,?,?,?)";
 			PreparedStatement statement = c.prepareStatement(insertQuery);
