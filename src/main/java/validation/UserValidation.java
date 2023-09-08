@@ -13,7 +13,7 @@ public class UserValidation {
 	public boolean validateUser(User user) throws InvalidUserException {
 
 		if (user != null && validateName(user.getName()) && validatePassword(user.getPassword())
-				&& validateEmail(user.getEmail()) && isEmailExist(user.getEmail())) {
+				&& validateEmail(user.getEmail())) {
 
 			return true;
 		} else {
@@ -38,7 +38,7 @@ public class UserValidation {
 			System.out.println("They given username is Invalid.");
 			return false;
 		}
-
+ 
 	}
 
 	public boolean validatePassword(String password) {
@@ -81,20 +81,5 @@ public class UserValidation {
 		return isMatch;
 	}
 
-	public boolean isEmailExist(String email) throws InvalidUserException {
-
-		UserDAO userDAO = new UserDAO();
-
-		try {
-			if (userDAO.isEmailAlreadyExists(email))
-				return true;
-
-		} catch (DAOException e)  {
-			e.printStackTrace();
-			throw new InvalidUserException(e);
-		}
-		return true;
-
-	}
-
+	
 }

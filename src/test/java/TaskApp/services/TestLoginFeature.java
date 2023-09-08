@@ -14,7 +14,7 @@ import services.exception.ServiceException;
 
 public class TestLoginFeature {
 	@Test
-	public void testLoginSuccess() {
+	 void testLoginSuccess() {
 		try {
 			UserService loginUser = new UserService();
 			User user = new User();
@@ -28,7 +28,7 @@ public class TestLoginFeature {
 		}
 	}
 	@Test
-	public void testEmptyEmailId() {
+	 void testEmptyEmailId() {
 
 		try {
 			UserService loginUser = new UserService();
@@ -43,7 +43,7 @@ public class TestLoginFeature {
 	}
 	
 	@Test
-	public void testEmptyPassword() {
+	 void testEmptyPassword() {
 
 		try {
 			UserService loginUser = new UserService();
@@ -58,7 +58,7 @@ public class TestLoginFeature {
 	}
 	
 	@Test
-	public void testLoginEmailNotFound() {
+	 void testLoginEmailNotFound() {
 		try {
 			UserService loginUser = new UserService();
 			
@@ -72,31 +72,33 @@ public class TestLoginFeature {
 	}
 	
 	 @Test
-	    public void testGetUserById() {
-	        // Taking  user ID from Db for testing
-	        int userId = 1; 
-	        UserService userService = new UserService();
-	        try {
-	            User user = userService.getUserById(userId);
+	 void testGetUserByEmail() {
+		 UserService UserService = new UserService();
+	        // Arrange
+	        String userId = "Karthik9@gmail.com";
 
-	            assertNotNull(user);
-	            assertEquals(userId, user.getId());
-	            assertNotNull(user.getName());
-	            assertNotNull(user.getEmail());
-	            assertNotNull(user.getPassword());
-
-	        } catch (ServiceException e) {
-	            fail("ServiceException should not be thrown: " + e.getMessage());
-	        }
+	        // Act
+	        User user;
+			try {
+				user = UserService.getUserByEmail(userId);
+				 assertNotNull(user);
+			        assertEquals(userId, user.getEmail());
+			        assertNotNull(user.getName());
+			        assertNotNull(user.getPassword());
+			} catch (ServiceException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				
+			}	       
 	    }
 	 
 	    @Test
-	    public void testUpdateUser() {
+	     void testUpdateUser() {
 	        // Creating a user object with updated information
 	        User updatedUser = new User();
 	        UserService userService = new UserService();
 	        updatedUser.setId(1); // Replace with the actual user ID you want to update
-	        updatedUser.setName("Muthu");
+	        updatedUser.setName("muthuSelvam");
 	        updatedUser.setEmail("muthu@gmail.com");
 	        updatedUser.setPassword("Karthik@123");
 

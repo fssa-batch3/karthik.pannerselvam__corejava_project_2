@@ -23,7 +23,7 @@ public class TaskService {
 			}
 		} catch (InvalidTaskException | DAOException e) {
 			throw new ServiceException(e);
-		}
+		} 
 	}
 
 	/* 
@@ -42,18 +42,5 @@ public class TaskService {
 		return tasksFromDB;
 
 	}
-	public static void main(String args[])  {
-		Task newTask = new Task();
-		TaskService service = new TaskService();
-		newTask.setTaskName("Finish the project backend");
-		newTask.setTaskStatus("PENDING");
-		newTask.setTaskDesc("Complete the test case part of the Add task feature");
-		newTask.setUserEmail("Karthik@gmail.com");
-		try {
-		System.out.println(service.newTask(newTask));
-		} catch (ServiceException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+	
 }

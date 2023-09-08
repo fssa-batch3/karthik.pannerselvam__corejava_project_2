@@ -1,6 +1,12 @@
 package model;
 
 public class Task {
+	
+	private int id;
+	private  String taskName;
+	private  String taskStatus;
+	private  String taskDesc;
+	private String userEmail;
 
 	public Task(String taskName, String taskStatus, String taskDesc, String userEmail) {
 		super();
@@ -20,10 +26,7 @@ public class Task {
 				+ userEmail + "]";
 	}
 
-	private  String taskName;
-	private  String taskStatus;
-	private  String taskDesc;
-	private String userEmail;
+	
 
 	public String getTaskName() {
 		return taskName;
@@ -56,4 +59,12 @@ public class Task {
 	public void setUserEmail(String userEmail) {
 		this.userEmail = userEmail;
 	}
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 }

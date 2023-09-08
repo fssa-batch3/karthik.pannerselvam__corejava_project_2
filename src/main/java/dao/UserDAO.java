@@ -96,19 +96,27 @@ public class UserDAO {
 	 * @return Exception if there is email already exist while registering
 	 * @throws DAOException
 	 */
-	public boolean isEmailAlreadyExists(String email) throws DAOException {
+	public User isEmailAlreadyExists(String email) throws DAOException {
 		final String selectQuery = "SELECT email FROM users WHERE email = ?";
+		User user = null;
 
 		try (PreparedStatement pstmt = ConnectionDB.getConnect().prepareStatement(selectQuery)) {
 
 			pstmt.setString(1, email);
 
 			try (ResultSet rs = pstmt.executeQuery()) {
-				return rs.next(); // Return true if the email exists
+			
+				if(rs.next()) { 
+					 User user1 = new User();
+					 user1.setEmail(rs.getString("email"));
+					 user = user1;
+				}
 			}
+			
 		} catch (SQLException e) {
 			throw new DAOException(e);
 		}
+		return user;
 	}
 
 	/**
@@ -222,7 +230,6 @@ public class UserDAO {
 
 			rowsUpdated = pstmt.executeUpdate();
 
-			System.out.println("Rows updated: " + rowsUpdated);
 		} catch (SQLException e) {
 			throw new DAOException(e);
 		}

@@ -12,7 +12,7 @@ import services.exception.ServiceException;
 
 public class TestListTaskFeature {
 	@Test
-	public void testListTasksSuccess() {
+	 void testListTasksSuccess() {
 		try {
 			TaskService taskService = new TaskService();
 			List<Task> testTasks = taskService.getAllTasks("muthu@gmail.com");

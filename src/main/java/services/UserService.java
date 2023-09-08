@@ -19,14 +19,15 @@ public class UserService {
 		UserValidation uservalidation = new UserValidation();
 		try {
 			uservalidation.validateUser(user);
-			if (userDAO.createUser(user)) {
-				System.out.println(user.getName() + "Successfully registered!");
-				return true;
-			} else {
-				return false;
+			User userExisting = userDAO.isEmailAlreadyExists(user.getEmail());
+			if (userExisting != null) {
+				throw new ServiceException("user already exists");
 			}
+			 
+			return userDAO.createUser(user);
+		
 		} catch (DAOException | InvalidUserException e) {
-			throw new ServiceException(e);
+			throw new ServiceException(e.getMessage());
 		}
 	}
 

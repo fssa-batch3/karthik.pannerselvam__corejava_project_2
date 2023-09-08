@@ -11,22 +11,22 @@ public class ConnectionDB {
 		/**
 		 * @CloudDB
 		 */
-		
-		String DB_URL;
-		String DB_USER;
-		String DB_PASSWORD;
-		
-		DB_URL = System.getenv("DB_URL");
-		DB_USER = System.getenv("DB_USER");
-		DB_PASSWORD = System.getenv("DB_PASSWORD");
+//		
+//		String DB_URL;
+//		String DB_USER;
+//		String DB_PASSWORD;
+//		
+//		DB_URL = System.getenv("DB_URL");
+//		DB_USER = System.getenv("DB_USER");
+//		DB_PASSWORD = System.getenv("DB_PASSWORD");
 		
 		/**
 		 * @LocalHost
 		 */
 
-//		String DB_URL = "jdbc:mysql://localhost/project";
-//		String DB_USER = "root";
-//		String DB_PASSWORD = "12345678";
+		String DB_URL = "jdbc:mysql://localhost/karthik_pannerselvam_corejava_project";
+		String DB_USER = "root";
+		String DB_PASSWORD = "123456";
 		
 
 		try {

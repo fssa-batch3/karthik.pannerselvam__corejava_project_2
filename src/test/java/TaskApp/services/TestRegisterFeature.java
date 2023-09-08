@@ -25,7 +25,7 @@ public class TestRegisterFeature {
 	@Test
 	public void testRegistrationSuccess() {
 		UserService userService = new UserService();
-		User user1 = new User("arunkumar", "Karthik9@gmail.com", "Arun@2023");
+		User user1 = new User("balaji", "balaji@gmail.com", "Balaji@2023");
 		
 		try {
 			assertTrue(userService.registerUser(user1));
