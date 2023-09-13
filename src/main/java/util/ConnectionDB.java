@@ -24,19 +24,23 @@ public class ConnectionDB {
 		 * @LocalHost
 		 */
 
-		String DB_URL = "jdbc:mysql://localhost/karthik_pannerselvam_corejava_project";
-		String DB_USER = "root";
-		String DB_PASSWORD = "123456";
+		String DB_URL1;
+		String DB_USER1 ;
+		String DB_PASSWORD1 ;
+		
+		DB_URL1 = System.getenv("DB_URL1");
+		DB_USER1 = System.getenv("DB_USER1");
+		DB_PASSWORD1 = System.getenv("DB_PASSWORD1");
 		
 
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			connect = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+			connect = DriverManager.getConnection(DB_URL1, DB_USER1, DB_PASSWORD1);
 		} catch (SQLException e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 			throw new RuntimeException("Unable to connect to database", e);
 		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 			throw new RuntimeException("Database driver class not found", e);
 		}
 		return connect;

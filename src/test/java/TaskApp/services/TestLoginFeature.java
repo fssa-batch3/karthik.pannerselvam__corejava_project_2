@@ -98,9 +98,9 @@ public class TestLoginFeature {
 	        User updatedUser = new User();
 	        UserService userService = new UserService();
 	        updatedUser.setId(1); // Replace with the actual user ID you want to update
-	        updatedUser.setName("muthuSelvam");
-	        updatedUser.setEmail("muthu@gmail.com");
-	        updatedUser.setPassword("Karthik@123");
+	        updatedUser.setName("bala");
+	        updatedUser.setEmail("balaji@gmail.com");
+	        updatedUser.setPassword("Balaji@error123");
 
 	        try {
 	            boolean result = userService.updateUser(updatedUser);

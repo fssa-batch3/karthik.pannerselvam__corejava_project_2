@@ -1,29 +1,29 @@
 package dao;
 
-/**
- * @author karthik
-
- *
- */
 import model.Task;
 import util.ConnectionDB;
 
-import java.util.ArrayList;
-
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 import dao.exception.DAOException;
 
+/**
+ * The TaskDao class provides data access methods for tasks, including creating,
+ * updating, and retrieving tasks from the database. It interacts with the
+ * database using JDBC and handles exceptions using the DAOException class.
+ */
 public class TaskDao {
- 
+
 	/**
-	 * 
-	 * @param task
-	 * @return boolean
-	 * @throws DAOException
+	 * Creates a new task in the database.
+	 *
+	 * @param task The task to be created.
+	 * @return True if the task is successfully created in the database, false
+	 *         otherwise.
+	 * @throws DAOException If there is an issue with the database operation.
 	 */
-	// Create Task
 	public boolean createTask(Task task) throws DAOException {
 		try (Connection c = ConnectionDB.getConnect();
 				PreparedStatement statement = c.prepareStatement(
@@ -31,7 +31,7 @@ public class TaskDao {
 			statement.setString(1, task.getTaskName());
 			statement.setString(2, task.getTaskStatus());
 			statement.setString(3, task.getTaskDesc());
-			statement.setString(4, task.getUserEmail()); 
+			statement.setString(4, task.getUserEmail());
 
 			// Execute the query
 			int rows = statement.executeUpdate();
@@ -42,10 +42,62 @@ public class TaskDao {
 	}
 
 	/**
-	 * 
-	 * @param email
-	 * @return List
-	 * @throws DAOException
+	 * Updates an existing task in the database.
+	 *
+	 * @param task The task to be updated.
+	 * @return True if the task is successfully updated in the database, false
+	 *         otherwise.
+	 * @throws DAOException If there is an issue with the database operation.
+	 */
+	public boolean updateTask(Task task) throws DAOException {
+		try (Connection c = ConnectionDB.getConnect();
+				PreparedStatement statement = c.prepareStatement(
+						"UPDATE tasks SET taskname=?, task_status=?, task_description=? WHERE task_id=?")) {
+			statement.setString(1, task.getTaskName());
+			statement.setString(2, task.getTaskStatus());
+			statement.setString(3, task.getTaskDesc());
+			statement.setInt(4, task.getId());
+
+			// Execute the query
+			int rows = statement.executeUpdate();
+			return (rows == 1);
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		}
+	}
+
+	public Task gatTaskById(int task_id) throws DAOException {
+		final String SELECTQUERY = "SELECT * FROM tasks WHERE task task_id=? ";
+		try (Connection c = ConnectionDB.getConnect(); PreparedStatement statement = c.prepareStatement(SELECTQUERY)) {
+			statement.setInt(1, task_id);
+			try (ResultSet rs = statement.executeQuery()) {
+				if (rs.next()) {
+					int id = rs.getInt("task_id");
+					String taskName = rs.getString("taskName");
+					String taskDescription = rs.getString("task_description");
+					String taskStatus = rs.getNString("task_Status");
+					Task task = new Task();
+					task.setId(id);
+					task.setTaskName(taskName);
+					task.setTaskDesc(taskDescription);
+					task.setTaskStatus(taskStatus);
+
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	/**
+	 * Retrieves a list of tasks associated with a user from the database.
+	 *
+	 * @param email The email of the user for whom tasks are to be retrieved.
+	 * @return A list of tasks associated with the specified user.
+	 * @throws DAOException If there is an issue with retrieving tasks from the
+	 *                      database.
 	 */
 	public static List<Task> getAllTasks(String email) throws DAOException {
 		List<Task> tasks = new ArrayList<>();
@@ -60,7 +112,6 @@ public class TaskDao {
 				task.setTaskDesc(resultSet.getString("task_description"));
 				task.setUserEmail(resultSet.getString("user_email"));
 				task.setId(resultSet.getInt("task_id"));
- 
 				// Add the task to the list
 				tasks.add(task);
 			}
@@ -70,5 +121,4 @@ public class TaskDao {
 
 		return tasks;
 	}
-
 }

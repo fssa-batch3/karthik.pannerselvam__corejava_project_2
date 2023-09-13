@@ -2,7 +2,7 @@ package model;
 
 public class Task {
 	
-	private int id;
+	private int task_id;
 	private  String taskName;
 	private  String taskStatus;
 	private  String taskDesc;
@@ -60,11 +60,11 @@ public class Task {
 		this.userEmail = userEmail;
 	}
 	public int getId() {
-		return id;
+		return task_id;
 	}
 
 	public void setId(int id) {
-		this.id = id;
+		this.task_id = id;
 	}
 
 }
