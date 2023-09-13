@@ -86,7 +86,7 @@ public class TaskService {
         try {
             tasksFromDB = TaskDao.getAllTasks(user_email);
             for (Task task : tasksFromDB) {
-                System.out.println(task.toString());
+            task.toString();
             }
         } catch (DAOException e) {
             throw new ServiceException(e);

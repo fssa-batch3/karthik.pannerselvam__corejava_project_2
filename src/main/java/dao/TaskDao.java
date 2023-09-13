@@ -66,30 +66,32 @@ public class TaskDao {
 		}
 	}
 
-	public Task gatTaskById(int task_id) throws DAOException {
-		final String SELECTQUERY = "SELECT * FROM tasks WHERE task task_id=? ";
-		try (Connection c = ConnectionDB.getConnect(); PreparedStatement statement = c.prepareStatement(SELECTQUERY)) {
-			statement.setInt(1, task_id);
-			try (ResultSet rs = statement.executeQuery()) {
-				if (rs.next()) {
-					int id = rs.getInt("task_id");
-					String taskName = rs.getString("taskName");
-					String taskDescription = rs.getString("task_description");
-					String taskStatus = rs.getNString("task_Status");
-					Task task = new Task();
-					task.setId(id);
-					task.setTaskName(taskName);
-					task.setTaskDesc(taskDescription);
-					task.setTaskStatus(taskStatus);
+	public Task getTaskById(int task_id) throws DAOException {
+	    final String SELECTQUERY = "SELECT * FROM tasks WHERE task_id=?";
+	    try (Connection c = ConnectionDB.getConnect(); PreparedStatement statement = c.prepareStatement(SELECTQUERY)) {
+	        statement.setInt(1, task_id);
+	        try (ResultSet rs = statement.executeQuery()) {
+	            if (rs.next()) {
+	                int id = rs.getInt("task_id");
+	                String taskName = rs.getString("taskName");
+	                String taskDescription = rs.getString("task_description");
+	                String taskStatus = rs.getString("task_Status"); // Corrected typo here
+	                Task task = new Task();
+	                task.setId(id);
+	                task.setTaskName(taskName);
+	                task.setTaskDesc(taskDescription);
+	                task.setTaskStatus(taskStatus);
 
-				}
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
+	                return task;
+	            }
+	        }
+	    } catch (SQLException e) {
+	        // Handle the exception appropriately, e.g., log it or throw a DAOException
+	        throw new DAOException("Error retrieving task by ID", e);
+	    }
+	    return null;
 	}
+
 
 	/**
 	 * Retrieves a list of tasks associated with a user from the database.
@@ -121,4 +123,6 @@ public class TaskDao {
 
 		return tasks;
 	}
+
+
 }
