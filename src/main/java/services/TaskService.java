@@ -59,21 +59,6 @@ public class TaskService {
         }
     }
 
-//    public static void main(String[] args) {
-//		TaskService taskService = new TaskService();
-//		Task task = new Task();
-//		task.setTaskName("finish the project");
-//		task.setTaskDesc("heloo sdfsndjubn");
-//		task.setTaskStatus("PENDING");
-//		task.setId(2);
-//		try {
-//		boolean u =	taskService.updateTask(task);
-//			System.out.println(u);
-//		} catch (ServiceException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//	}
     /**
      * Retrieves a list of all tasks associated with a user.
      *

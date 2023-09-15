@@ -7,13 +7,16 @@ public class Task {
 	private  String taskStatus;
 	private  String taskDesc;
 	private String userEmail;
+	private String taskPriority;
 
-	public Task(String taskName, String taskStatus, String taskDesc, String userEmail) {
+
+	public Task(String taskName, String taskStatus, String taskDesc, String userEmail, String taskPriority) {
 		super();
 		this.taskName = taskName;
 		this.taskStatus = taskStatus;
 		this.taskDesc = taskDesc;
 		this.userEmail  = userEmail;
+		this.taskPriority = taskPriority;
 	}
 	
 	public Task() {
@@ -66,5 +69,12 @@ public class Task {
 	public void setId(int id) {
 		this.task_id = id;
 	}
+	
+	public String getTaskPriority() {
+		return taskPriority;
+	}
 
+	public void setTaskPriority(String taskPriority) {
+		this.taskPriority = taskPriority;
+	}
 }

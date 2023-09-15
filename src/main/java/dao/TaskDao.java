@@ -27,11 +27,12 @@ public class TaskDao {
 	public boolean createTask(Task task) throws DAOException {
 		try (Connection c = ConnectionDB.getConnect();
 				PreparedStatement statement = c.prepareStatement(
-						"INSERT INTO tasks (taskname, task_status, task_description, user_email) VALUES (?, ?, ?, ?)")) {
+						"INSERT INTO tasks (taskname, task_status, task_description,task_priority,user_email) VALUES (?, ?, ?, ?,?)")) {
 			statement.setString(1, task.getTaskName());
 			statement.setString(2, task.getTaskStatus());
 			statement.setString(3, task.getTaskDesc());
-			statement.setString(4, task.getUserEmail());
+			statement.setString(4, task.getTaskPriority());
+			statement.setString(5, task.getUserEmail());
 
 			// Execute the query
 			int rows = statement.executeUpdate();
@@ -52,11 +53,12 @@ public class TaskDao {
 	public boolean updateTask(Task task) throws DAOException {
 		try (Connection c = ConnectionDB.getConnect();
 				PreparedStatement statement = c.prepareStatement(
-						"UPDATE tasks SET taskname=?, task_status=?, task_description=? WHERE task_id=?")) {
+						"UPDATE tasks SET taskname=?, task_status=?, task_description=?, task_priority=? WHERE task_id=?")) {
 			statement.setString(1, task.getTaskName());
 			statement.setString(2, task.getTaskStatus());
 			statement.setString(3, task.getTaskDesc());
-			statement.setInt(4, task.getId());
+			statement.setString(4, task.getTaskPriority());
+			statement.setInt(5, task.getId());
 
 			// Execute the query
 			int rows = statement.executeUpdate();
@@ -75,13 +77,16 @@ public class TaskDao {
 	                int id = rs.getInt("task_id");
 	                String taskName = rs.getString("taskName");
 	                String taskDescription = rs.getString("task_description");
-	                String taskStatus = rs.getString("task_Status"); // Corrected typo here
+	                String taskStatus = rs.getString("task_Status");
+	                String taskPriority = rs.getString("task_priority");
+	                
 	                Task task = new Task();
 	                task.setId(id);
 	                task.setTaskName(taskName);
 	                task.setTaskDesc(taskDescription);
 	                task.setTaskStatus(taskStatus);
-
+	                task.setTaskPriority(taskPriority);
+	                
 	                return task;
 	            }
 	        }
@@ -114,6 +119,7 @@ public class TaskDao {
 				task.setTaskDesc(resultSet.getString("task_description"));
 				task.setUserEmail(resultSet.getString("user_email"));
 				task.setId(resultSet.getInt("task_id"));
+				task.setTaskPriority(resultSet.getString("task_priority"));
 				// Add the task to the list
 				tasks.add(task);
 			}
