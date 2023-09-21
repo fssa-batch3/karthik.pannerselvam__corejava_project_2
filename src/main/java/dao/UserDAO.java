@@ -13,6 +13,10 @@ import util.ConnectionDB;
 
 public class UserDAO {
 
+	
+	
+	static final String SELECTQUERY = "SELECT email FROM users WHERE email = ?";
+	
 	/**
 	 * 
 	 * @param user
@@ -40,28 +44,7 @@ public class UserDAO {
 
 	}
 
-////	Delete the user
-//	public boolean deleteUser(String email) throws DAOException {
-//
-//		final String deleteQuery = "DELETE FROM users where email=?";
-//
-//		int row = 0;
-//
-//		try (PreparedStatement std = ConnectionDB.getConnect().prepareStatement(deleteQuery)) {
-//
-//			std.setString(1, email);
-//
-//			row = std.executeUpdate();
-//
-//			System.out.println("Deleted row: " + row);
-//
-//		} catch (SQLException e) {
-//			throw new DAOException(e);
-//		}
-//
-//		return row > 0;
-//
-//	}
+
 	/**
 	 * 
 	 * @param email
@@ -97,10 +80,10 @@ public class UserDAO {
 	 * @throws DAOException
 	 */
 	public User isEmailAlreadyExists(String email) throws DAOException {
-		final String selectQuery = "SELECT email FROM users WHERE email = ?";
+		
 		User user = null;
 
-		try (PreparedStatement pstmt = ConnectionDB.getConnect().prepareStatement(selectQuery)) {
+		try (PreparedStatement pstmt = ConnectionDB.getConnect().prepareStatement(SELECTQUERY)) {
 
 			pstmt.setString(1, email);
 
@@ -118,35 +101,23 @@ public class UserDAO {
 		}
 		return user;
 	}
+	
+public  boolean isEmailRegistered(String email) throws DAOException {
+	
+	try(PreparedStatement pstmt = ConnectionDB.getConnect().prepareStatement(SELECTQUERY)){
+		pstmt.setString(1,email);
+		
+		try (ResultSet rs = pstmt.executeQuery()){
+			return rs.next();
+		}
+		
+	} catch (SQLException e) {
+		throw new DAOException(e);
+	}
+	
+}	
 
-	/**
-	 * 
-	 * @param id
-	 * @return User
-	 * @throws DAOException
-	 */
-//	public User getUserByIdForUserDetails(int id) throws DAOException {
-//
-//		final String selectQuery = "SELECT * From users WHERE user_id= ?";
-//		User user = new User();
-//		try (PreparedStatement pstmt = ConnectionDB.getConnect().prepareStatement(selectQuery)) {
-//
-//			pstmt.setInt(1, id);
-//
-//			try (ResultSet rs = pstmt.executeQuery()) {
-//				if (rs.next()) {
-//					user.setName(rs.getString("username"));
-//					user.setEmail(rs.getString("email"));
-//					user.setId(rs.getInt("user_id"));
-//					user.setPassword(rs.getString("password"));
-//				}
-//
-//			}
-//		} catch (SQLException e) {
-//			throw new DAOException(e);
-//		}
-//		return user;
-//	}
+	
 
 	private String userPasswordFromDb;
 

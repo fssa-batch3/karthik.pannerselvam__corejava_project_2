@@ -1,13 +1,19 @@
-package dao;
+	package dao;
 
-import model.Task;
-import util.ConnectionDB;
-
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 import dao.exception.DAOException;
+import model.Task;
+import services.TaskService;
+import services.exception.ServiceException;
+import util.ConnectionDB;
 
 /**
  * The TaskDao class provides data access methods for tasks, including creating,
@@ -27,12 +33,15 @@ public class TaskDao {
 	public boolean createTask(Task task) throws DAOException {
 		try (Connection c = ConnectionDB.getConnect();
 				PreparedStatement statement = c.prepareStatement(
-						"INSERT INTO tasks (taskname, task_status, task_description,task_priority,user_email) VALUES (?, ?, ?, ?,?)")) {
+						"INSERT INTO tasks (taskname, task_status, task_description,task_priority,user_email,assigned_to,start_date,end_date) VALUES (?, ?, ?, ?,?,?,?,?)")) {
 			statement.setString(1, task.getTaskName());
 			statement.setString(2, task.getTaskStatus());
 			statement.setString(3, task.getTaskDesc());
 			statement.setString(4, task.getTaskPriority());
 			statement.setString(5, task.getUserEmail());
+			statement.setString(6, task.getAssignee());
+			statement.setDate(7, Date.valueOf(task.getStartDate()));
+			statement.setDate(8, Date.valueOf(task.getEndDate()));
 
 			// Execute the query
 			int rows = statement.executeUpdate();
@@ -50,6 +59,7 @@ public class TaskDao {
 	 *         otherwise.
 	 * @throws DAOException If there is an issue with the database operation.
 	 */
+	
 	public boolean updateTask(Task task) throws DAOException {
 		try (Connection c = ConnectionDB.getConnect();
 				PreparedStatement statement = c.prepareStatement(
@@ -87,6 +97,7 @@ public class TaskDao {
 	                task.setTaskStatus(taskStatus);
 	                task.setTaskPriority(taskPriority);
 	                
+	                
 	                return task;
 	            }
 	        }
@@ -107,28 +118,42 @@ public class TaskDao {
 	 *                      database.
 	 */
 	public static List<Task> getAllTasks(String email) throws DAOException {
-		List<Task> tasks = new ArrayList<>();
-		try (Connection c = ConnectionDB.getConnect();
-				PreparedStatement statement = c.prepareStatement("SELECT * FROM tasks WHERE user_email=?");) {
-			statement.setString(1, email);
-			ResultSet resultSet = statement.executeQuery();
-			while (resultSet.next()) {
-				Task task = new Task();
-				task.setTaskName(resultSet.getString("taskname"));
-				task.setTaskStatus(resultSet.getString("task_status"));
-				task.setTaskDesc(resultSet.getString("task_description"));
-				task.setUserEmail(resultSet.getString("user_email"));
-				task.setId(resultSet.getInt("task_id"));
-				task.setTaskPriority(resultSet.getString("task_priority"));
-				// Add the task to the list
-				tasks.add(task);
-			}
-		} catch (SQLException e) {
-			throw new DAOException(e);
-		}
+	    List<Task> tasks = new ArrayList<>();
+	    try (Connection c = ConnectionDB.getConnect();
+	         PreparedStatement statement = c.prepareStatement("SELECT * FROM tasks WHERE user_email=? OR assigned_to=?");) {
+	        statement.setString(1, email);
+	        statement.setString(2, email);
+	        ResultSet rst = statement.executeQuery();
+	        while (rst.next()) {
+	            Task task = new Task();
+	            task.setTaskName(rst.getString("taskname"));
+	            task.setTaskStatus(rst.getString("task_status"));
+	            task.setTaskDesc(rst.getString("task_description"));
+	            task.setUserEmail(rst.getString("user_email"));
+	            task.setId(rst.getInt("task_id"));
+	            task.setTaskPriority(rst.getString("task_priority"));
+	            task.setAssignee(rst.getString("assigned_to"));
 
-		return tasks;
+	            // Check if the start_date and end_date are not null before converting
+	            Date startDateSql = rst.getDate("start_date");
+	            Date endDateSql = rst.getDate("end_date");
+
+	            if (startDateSql != null) {
+	                task.setStartDate(startDateSql.toLocalDate());
+	            }
+	            
+	            if (endDateSql != null) {
+	                task.setEndDate(endDateSql.toLocalDate());
+	            }
+
+	            // Add the task to the list
+	            tasks.add(task);
+	        }
+	    } catch (SQLException e) {
+	        throw new DAOException(e);
+	    }
+
+	    return tasks;
 	}
-
-
 }
+

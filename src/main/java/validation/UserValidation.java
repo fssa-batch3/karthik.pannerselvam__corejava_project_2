@@ -81,5 +81,18 @@ public class UserValidation {
 		return isMatch;
 	}
 
+	public boolean emailIsregistered(String email) throws InvalidUserException{
+		UserDAO user = new UserDAO();
+		try {
+			
+			if(user.isEmailRegistered(email)) {
+				return true;
+			}else {
+				throw new InvalidUserException("The entered user is not registered");
+			}
+		} catch (DAOException e) {
+			throw new InvalidUserException(e);
+		}
+	}
 	
 }
