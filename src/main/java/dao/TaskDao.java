@@ -63,12 +63,14 @@ public class TaskDao {
 	public boolean updateTask(Task task) throws DAOException {
 		try (Connection c = ConnectionDB.getConnect();
 				PreparedStatement statement = c.prepareStatement(
-						"UPDATE tasks SET taskname=?, task_status=?, task_description=?, task_priority=? WHERE task_id=?")) {
+						"UPDATE tasks SET taskname=?, task_status=?, task_description=?, task_priority=?, start_date=?, end_date=? WHERE task_id=?")) {
 			statement.setString(1, task.getTaskName());
 			statement.setString(2, task.getTaskStatus());
 			statement.setString(3, task.getTaskDesc());
 			statement.setString(4, task.getTaskPriority());
-			statement.setInt(5, task.getId());
+			statement.setDate(5, Date.valueOf(task.getStartDate()));
+			statement.setDate(6, Date.valueOf(task.getEndDate()));
+			statement.setInt(7, task.getId());
 
 			// Execute the query
 			int rows = statement.executeUpdate();
@@ -89,6 +91,10 @@ public class TaskDao {
 	                String taskDescription = rs.getString("task_description");
 	                String taskStatus = rs.getString("task_Status");
 	                String taskPriority = rs.getString("task_priority");
+	                Date startDate = rs.getDate("start_date"); // Assuming start_date is of DATE type in your database
+	                Date endDate = rs.getDate("end_date");
+	                LocalDate localStartDate = startDate.toLocalDate();
+	                LocalDate localEndDate = endDate.toLocalDate();// Assuming end_date is of DATE type in your database
 	                
 	                Task task = new Task();
 	                task.setId(id);
@@ -96,6 +102,9 @@ public class TaskDao {
 	                task.setTaskDesc(taskDescription);
 	                task.setTaskStatus(taskStatus);
 	                task.setTaskPriority(taskPriority);
+	                task.setStartDate(localStartDate);
+	                task.setEndDate(localEndDate);
+	                
 	                
 	                
 	                return task;
@@ -107,6 +116,7 @@ public class TaskDao {
 	    }
 	    return null;
 	}
+
 
 
 	/**

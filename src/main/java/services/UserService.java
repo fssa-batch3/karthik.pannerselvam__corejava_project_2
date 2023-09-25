@@ -14,6 +14,7 @@ public class UserService {
 	 * @return boolean
 	 * @throws ServiceException
 	 */
+
 	public boolean registerUser(User user) throws ServiceException {
 		UserDAO userDAO = new UserDAO();
 		UserValidation uservalidation = new UserValidation();
@@ -23,9 +24,9 @@ public class UserService {
 			if (userExisting != null) {
 				throw new ServiceException("user already exists");
 			}
-			 
+
 			return userDAO.createUser(user);
-		
+
 		} catch (DAOException | InvalidUserException e) {
 			throw new ServiceException(e.getMessage());
 		}
@@ -57,7 +58,6 @@ public class UserService {
 		}
 	}
 
-
 	/**
 	 * 
 	 * @param user
@@ -72,7 +72,7 @@ public class UserService {
 			return UserDAO.updateUser(user);
 		} catch (DAOException | InvalidUserException e) {
 			throw new ServiceException(e);
-		} 
+		}
 	}
 
 	/**
@@ -81,12 +81,16 @@ public class UserService {
 	 * @return User
 	 * @throws ServiceException
 	 */
+
 	public User getUserByEmail(String email) throws ServiceException {
 		UserDAO UserDao = new UserDAO();
 		try {
-			return UserDao.getUserByEmailForUserDetails(email);
+			User user = null;
+			user = UserDao.getUserByEmailForUserDetails(email);
+			return user;
 		} catch (DAOException e) {
 			throw new ServiceException("Error retrieving user by email");
 		}
 	}
+
 }

@@ -102,22 +102,6 @@ public class UserDAO {
 		return user;
 	}
 	
-public  boolean isEmailRegistered(String email) throws DAOException {
-	
-	try(PreparedStatement pstmt = ConnectionDB.getConnect().prepareStatement(SELECTQUERY)){
-		pstmt.setString(1,email);
-		
-		try (ResultSet rs = pstmt.executeQuery()){
-			return rs.next();
-		}
-		
-	} catch (SQLException e) {
-		throw new DAOException(e);
-	}
-	
-}	
-
-	
 
 	private String userPasswordFromDb;
 
