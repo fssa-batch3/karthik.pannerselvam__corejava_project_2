@@ -20,7 +20,7 @@ import util.ConnectionDB;
  * updating, and retrieving tasks from the database. It interacts with the
  * database using JDBC and handles exceptions using the DAOException class.
  */
-public class TaskDao {
+public class TaskDAO {
 
 	/**
 	 * Creates a new task in the database.

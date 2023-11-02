@@ -52,26 +52,48 @@ public class UserDAO {
 	 * @throws DAOException
 	 */
 	public User getUserByEmailForUserDetails(String email) throws DAOException {
-		final String selectQuery = "SELECT * FROM users WHERE email = ?";
-		User user = new User();
+	    final String selectQuery = "SELECT * FROM users WHERE email = ?";
+	    User user = null;
 
-		try (PreparedStatement pstmt = ConnectionDB.getConnect().prepareStatement(selectQuery)) {
-			pstmt.setString(1, email);
+	    try (PreparedStatement pstmt = ConnectionDB.getConnect().prepareStatement(selectQuery)) {
+	        pstmt.setString(1, email);
 
-			try (ResultSet rs = pstmt.executeQuery()) {
-				if (rs.next()) {
-					user.setName(rs.getString("username"));
-					user.setEmail(rs.getString("email"));
-					user.setId(rs.getInt("user_id"));
-					user.setPassword(rs.getString("password"));
-				}
-			}
-		} catch (SQLException e) {
-			throw new DAOException(e);
-		}
+	        try (ResultSet rs = pstmt.executeQuery()) {
+	            if (rs.next()) {
+	                user = new User();
+	                user.setName(rs.getString("username"));
+	                user.setEmail(rs.getString("email"));
+	                user.setId(rs.getInt("user_id"));	
+	                user.setPassword(rs.getString("password"));
+	            }
+	        }
+	    } catch (SQLException e) {
+	        throw new DAOException(e);
+	    }
 
-		return user;
+	    return user;
 	}
+	
+	
+	public int getUserCountByEmailForUserDetails1(String email) throws DAOException {
+	    final String selectQuery = "SELECT COUNT(*) FROM users WHERE email = ?";
+	    int rowCount = 0;
+
+	    try (PreparedStatement pstmt = ConnectionDB.getConnect().prepareStatement(selectQuery)) {
+	        pstmt.setString(1, email);
+
+	        try (ResultSet rs = pstmt.executeQuery()) {
+	            if (rs.next()) {
+	                rowCount = rs.getInt(1);
+	            }
+	        }
+	    } catch (SQLException e) {
+	        throw new DAOException(e);
+	    }
+
+	    return rowCount;
+	}
+
 
 	/**
 	 * 
@@ -113,7 +135,7 @@ public class UserDAO {
 		this.userPasswordFromDb = userPasswordFromDb;
 	}
 
-	public User isLogin(User user) throws DAOException {
+	public User getUserByEmail(User user) throws DAOException {
 
 		final String selectQuery = "SELECT user_id,email,password FROM users WHERE email = ?";
 
@@ -140,7 +162,27 @@ public class UserDAO {
 		}
 
 	}
+	public User getUserByEmailForUserDetails1(String email) throws DAOException {
+		final String selectQuery = "SELECT * FROM users WHERE email = ?";
+		User user = new User();
 
+		try (PreparedStatement pstmt = ConnectionDB.getConnect().prepareStatement(selectQuery)) {
+			pstmt.setString(1, email);
+
+			try (ResultSet rs = pstmt.executeQuery()) {
+				if (rs.next()) {
+					user.setName(rs.getString("username"));
+					user.setEmail(rs.getString("email"));
+					user.setId(rs.getInt("user_id"));
+					user.setPassword(rs.getString("password"));
+				}
+			}
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		}
+
+		return user;
+	}
 	/**
 	 * 
 	 * @return List
@@ -191,4 +233,33 @@ public class UserDAO {
 
 		return rowsUpdated > 0;
 	}
+
+
+	public String getTaskAssigneeByEmail(String email) throws DAOException {
+	    final String selectQuery = "SELECT * FROM users WHERE email = ?";
+	    User user = null;
+
+	    try (PreparedStatement pstmt = ConnectionDB.getConnect().prepareStatement(selectQuery)) {
+	        pstmt.setString(1, email);
+
+	        try (ResultSet rs = pstmt.executeQuery()) {
+	            if (rs.next()) {
+	                user = new User();
+	                user.setName(rs.getString("username"));
+	                user.setEmail(rs.getString("email"));
+	                user.setId(rs.getInt("user_id"));
+	                user.setPassword(rs.getString("password"));
+	            }
+	        }
+	    } catch (SQLException e) {
+	        throw new DAOException(e);
+	    }
+
+	    if (user != null) {
+	        return user.getEmail(); // Return the email address as a String
+	    } else {
+	        return null; // Or handle the case when no user is found, e.g., throw an exception or return a default value
+	    }
+	}
+
 }

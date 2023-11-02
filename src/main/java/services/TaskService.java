@@ -2,7 +2,7 @@ package services;
 
 import java.util.List;
 
-import dao.TaskDao;
+import dao.TaskDAO;
 import dao.exception.DAOException;
 import model.Task;
 import services.exception.ServiceException;
@@ -24,7 +24,7 @@ public class TaskService {
      * @throws ServiceException If there is an issue with creating the task or validating its data.
      */
     public boolean newTask(Task task) throws ServiceException {
-        TaskDao taskdao = new TaskDao();
+        TaskDAO taskdao = new TaskDAO();
         TaskValidation taskvalidation = new TaskValidation();
         try {
             taskvalidation.taskName(task.getTaskName());
@@ -46,7 +46,7 @@ public class TaskService {
      * @throws ServiceException If there is an issue with updating the task or validating its data.
      */
     public boolean updateTask(Task task) throws ServiceException {
-        TaskDao taskdao = new TaskDao();
+        TaskDAO taskdao = new TaskDAO();
         TaskValidation taskvalidation = new TaskValidation();
 
         try {
@@ -69,7 +69,7 @@ public class TaskService {
     public List<Task> getAllTasks(String user_email) throws ServiceException {
         List<Task> tasksFromDB;
         try {
-            tasksFromDB = TaskDao.getAllTasks(user_email);
+            tasksFromDB = TaskDAO.getAllTasks(user_email);
             for (Task task : tasksFromDB) {
             task.toString();
             }

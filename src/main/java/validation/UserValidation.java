@@ -22,7 +22,7 @@ public class UserValidation {
 	}
 
 //	public boolean validateLogin()
-	public boolean validateName(String name) {
+	public boolean validateName(String name) throws InvalidUserException {
 		boolean match = false;
 		if (name == null)
 			return false;
@@ -32,16 +32,14 @@ public class UserValidation {
 		Matcher compare = pattern.matcher(name);
 		match = compare.matches();
 		if (match) {
-			System.out.println("They given username is valid.");
 			return true;
 		} else {
-			System.out.println("They given username is Invalid.");
-			return false;
+			throw new InvalidUserException("They given name is Invalid.");
 		}
  
 	}
 
-	public boolean validatePassword(String password) {
+	public boolean validatePassword(String password) throws InvalidUserException {
 		if (password == null || password.isEmpty()) {
 			System.out.println("Invalid password: Password is null or empty");
 			return false;
@@ -53,11 +51,9 @@ public class UserValidation {
 		Matcher matcher = pattern.matcher(password);
 
 		if (matcher.matches()) {
-			System.out.println("Valid Password");
 			return true;
 		} else {
-			System.out.println("Invalid password: Password does not meet complexity requirements");
-			return false;
+			throw new InvalidUserException("Invalid password: Password does not meet complexity requirements");
 		}
 	}
 
@@ -73,26 +69,10 @@ public class UserValidation {
 
 		isMatch = matcher.matches();
 		if (isMatch) {
-			System.out.println("The email address is: Valid");
 		} else {
-
 			throw new InvalidUserException("The email address is: Invalid");
 		}
 		return isMatch;
 	}
-
-	public boolean emailIsregistered(String email) throws InvalidUserException{
-		UserDAO user = new UserDAO();
-		try {
-			
-			if(user.isEmailRegistered(email)) {
-				return true;
-			}else {
-				throw new InvalidUserException("The entered user is not registered");
-			}
-		} catch (DAOException e) {
-			throw new InvalidUserException(e);
-		}
-	}
-	
 }
+	
